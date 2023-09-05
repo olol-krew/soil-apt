@@ -37,6 +37,7 @@ async function run() {
               content: message.content.replace(`<@${client.user.id}`, '')
             }
           ],
+          temperature: 0.7,
           model: 'gpt-3.5-turbo'
         })
 
@@ -45,10 +46,15 @@ async function run() {
         const chatResponse = await openai.chat.completions.create({
           messages: [
             {
+              role: 'system',
+              content: 'Je veux que tu fasse des réponses de moins de 100 mots.'
+            },
+            {
               role: 'user',
               content: message.content.replace(`<@${client.user.id}`, '')
             }
           ],
+          temperature: 0.7,
           model: 'gpt-3.5-turbo'
         })
 
