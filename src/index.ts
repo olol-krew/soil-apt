@@ -2,7 +2,7 @@ import 'dotenv/config'
 import { appendFile } from 'fs'
 
 import { Client, Events, GatewayIntentBits, Message } from 'discord.js'
-import { openai } from './config/open-ai.js'
+import { openai } from './config/open-ai'
 
 const { DISCORD_TOKEN } = process.env
 
