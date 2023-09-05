@@ -41,6 +41,8 @@ async function run() {
           model: 'gpt-3.5-turbo'
         })
 
+        console.log(`${message.author.displayName}: ${chatResponse.usage.total_tokens} total tokens`)
+
         originalMessage.reply(chatResponse.choices[0].message.content)
       } else {
         const chatResponse = await openai.chat.completions.create({
@@ -57,6 +59,8 @@ async function run() {
           temperature: 0.7,
           model: 'gpt-3.5-turbo'
         })
+
+        console.log(`${message.author.displayName}: ${chatResponse.usage.total_tokens} total tokens`)
 
         message.reply(chatResponse.choices[0].message.content)
       }
