@@ -19,7 +19,7 @@ async function run() {
   })
 
   client.on(Events.MessageCreate, async (message: Message) => {
-    if (!message.mentions.users.has(client.user.id))
+    if (!message.content.includes(client.user.id))
       return
 
 
