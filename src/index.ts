@@ -32,7 +32,7 @@ async function run() {
             content: message.content.replace(`<@${client.user.id}`, '').replace('@', '')
           }
         ],
-        temperature: 0.7,
+        temperature: 0.8,
         model: 'gpt-3.5-turbo',
       })
       console.log(`${message.author.displayName}: ${chatResponse.usage.total_tokens} total tokens`)
