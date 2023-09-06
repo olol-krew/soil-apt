@@ -33,12 +33,9 @@ async function run() {
         temperature: 0.7,
         model: 'gpt-3.5-turbo',
       })
+      
       console.log(`${message.author.displayName}: ${chatResponse.usage.total_tokens} total tokens`)
-
-      message.reference
-        ? (await message.fetchReference()).reply(chatResponse.choices[0].message.content)
-        : message.reply(chatResponse.choices[0].message.content)
-
+      message.reply(chatResponse.choices[0].message.content)
     } catch (error) {
       console.error(error)
       appendFile('errors.log', JSON.stringify(error), err => {
