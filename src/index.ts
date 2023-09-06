@@ -41,7 +41,7 @@ async function run() {
         temperature: 0.7,
         model: 'gpt-3.5-turbo',
       })
-
+      
       const prompt = await prisma.prompt.create({
         data: {
           author: {
@@ -67,10 +67,7 @@ async function run() {
       })
 
       console.log(prompt)
-
-      message.reference
-        ? (await message.fetchReference()).reply(chatResponse.choices[0].message.content)
-        : message.reply(chatResponse.choices[0].message.content)
+      message.reply(chatResponse.choices[0].message.content)
 
     } catch (error) {
       console.error(error)
