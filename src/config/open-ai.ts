@@ -17,7 +17,7 @@ export async function getSystemMessages(message: Message): Promise<{ role: "func
     },
     {
       role: 'system',
-      content: 'limite tes réponses à 200 mots'
+      content: 'Réponds avec 100 mots maximum'
     }
   ]
 
