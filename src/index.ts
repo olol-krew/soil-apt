@@ -13,15 +13,13 @@ async function run() {
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.GuildMessageReactions,
       GatewayIntentBits.MessageContent
     ]
   })
 
   client.on(Events.MessageCreate, async (message: Message) => {
-    if (!message.content.includes(client.user.id))
+    if (!message.content.startsWith(`<@${client.user.id}>`))
       return
-
 
     try {
       const chatResponse = await openai.chat.completions.create({
@@ -29,10 +27,10 @@ async function run() {
           ...await getSystemMessages(message),
           {
             role: 'user',
-            content: message.content.replace(`<@${client.user.id}`, '').replace('@', '')
+            content: message.content.replace(`<@${client.user.id}`, '')
           }
         ],
-        temperature: 0.8,
+        temperature: 0.7,
         model: 'gpt-3.5-turbo',
       })
       console.log(`${message.author.displayName}: ${chatResponse.usage.total_tokens} total tokens`)
@@ -42,6 +40,7 @@ async function run() {
         : message.reply(chatResponse.choices[0].message.content)
 
     } catch (error) {
+      console.error(error)
       appendFile('errors.log', JSON.stringify(error), err => {
         if (err) throw err
       })
