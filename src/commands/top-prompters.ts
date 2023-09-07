@@ -33,7 +33,15 @@ const topCommand: BotCommand = {
           totalToken: sum.outputToken + sum.inputToken
         }
       })
-      .sort((a, b) => a._count.Prompt + b._count.Prompt)
+      .sort((a, b) => {
+        if (a._count.Prompt > b._count.Prompt) {
+          return -1
+        } else if (a._count.Prompt < b._count.Prompt) {
+          return 1
+        }
+
+        return 0
+      })
 
     const reply = []
     let position = ['🥇', '🥈', '🥉']
