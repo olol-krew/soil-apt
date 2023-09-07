@@ -1,7 +1,6 @@
 import 'dotenv/config'
 
 import { Client, Events, GatewayIntentBits, Message, Collection } from 'discord.js'
-import { PrismaClient } from '@prisma/client'
 
 import { APTClient } from './types'
 import { loadCommands } from './helpers/load-commands'
@@ -25,9 +24,7 @@ async function run() {
   const loadedCommands = await loadCommands()
   loadedCommands.map(c => client.commands.set(c.data.name, c))
 
-  const prisma = new PrismaClient()
-
-  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message, prisma))
+  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message))
   client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
 
   client.once(Events.ClientReady, c => {

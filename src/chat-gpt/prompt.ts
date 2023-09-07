@@ -1,10 +1,11 @@
 import { Message } from "discord.js";
-import { APTClient } from "../types";
-import { getSystemMessages, openai } from "./open-ai";
-import { PrismaClient } from "@prisma/client";
 import { appendFile } from "node:fs";
 
-export async function handlePrompt(client: APTClient, message: Message, prisma: PrismaClient) {
+import { APTClient } from "../types";
+import { prisma } from "../prisma/prisma";
+import { getSystemMessages, openai } from "./open-ai";
+
+export async function handlePrompt(client: APTClient, message: Message) {
   if (!message.content.startsWith(`<@${client.user.id}>`))
     return
 
