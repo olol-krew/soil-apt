@@ -1,13 +1,50 @@
-import { BotCommand } from '../types.js'
 import { SlashCommandBuilder } from "discord.js";
 
-const topPromptersCommand: BotCommand = {
+import { BotCommand } from '../types'
+import { prisma } from '../prisma/prisma';
+
+const topCommand: BotCommand = {
   data: new SlashCommandBuilder()
     .setName('top')
     .setDescription('Returns top SoilAPT users.'),
   async execute(interaction) {
-    await interaction.reply('Pong!')
+    const users = await prisma.user.findMany({
+      include: {
+        _count: {
+          select: { Prompt: true }
+        }
+      }
+    })
+
+    const aggreg = await prisma.prompt.groupBy({
+      by: ['userId'],
+      _sum: {
+        outputToken: true,
+        inputToken: true
+      }
+    })
+
+    const topUsers = users
+      .map(u => {
+        const sum = aggreg.find(a => a.userId == u.id)._sum
+        return {
+          ...u,
+          ...sum,
+          totalToken: sum.outputToken + sum.inputToken
+        }
+      })
+      .sort((a, b) => a._count.Prompt + b._count.Prompt)
+
+    const reply = []
+    let position = ['🥇', '🥈', '🥉']
+
+    for (let i = 0; i < topUsers.length; i++) {
+      if (i > 10) break
+      reply.push(`${i < position.length ? position[i] : '😥'} **${topUsers[i].name}**: ${topUsers[i]._count.Prompt} prompts (${topUsers[i].totalToken} total tokens)`)
+    }
+
+    await interaction.reply('Les meilleurs potes de SoilAPT sont:\n' + reply.join('\n'))
   }
 }
 
-export default topPromptersCommand
+export default topCommand
