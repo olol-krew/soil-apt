@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { loadCommands } from './load-commands.js'
+import { loadCommands } from './load-commands'
 import { REST, Routes } from 'discord.js'
 
 const {
