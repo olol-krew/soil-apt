@@ -1,12 +1,9 @@
-import { Client, Collection } from 'discord.js'
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { BotCommand, APTClient } from '../types'
+import { BotCommand } from '../types'
 
 /**
- * Hydrates a client with commands
- * @param client The client to hydrate with commands
- * @returns the hydrated client
+ * @returns commands defined in the `commands` folder.
  */
 export async function loadCommands() {
   const commandsPath = join(__dirname, '../commands')
