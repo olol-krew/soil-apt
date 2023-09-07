@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "nodemon src/index.ts",
-    "prod": "tsc && forever start dist/index.js"
+    "dev:nodemon": "nodemon src/index.ts",
+    "dev:node": "tsc && node dist/index.js",
+    "prod": "tsc && forever start dist/index.js",
+    "deploy-commands": "tsc && node dist/helpers/deploy-commands.js"
   },
   "author": "n.broca@gmail.com",
   "license": "MIT",
