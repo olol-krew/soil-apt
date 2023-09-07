@@ -5,6 +5,6 @@ export interface BotCommand {
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>
 }
 
-export interface CClient extends Client {
+export interface APTClient extends Client {
   commands?: Collection<string, BotCommand>
 }
