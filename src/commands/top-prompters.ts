@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from "discord.js";
 
 import { BotCommand } from '../types'
 import { prisma } from '../prisma/prisma';
+import { formatBigNumber } from "../helpers/format-big-number";
 
 const topCommand: BotCommand = {
   data: new SlashCommandBuilder()
@@ -48,7 +49,7 @@ const topCommand: BotCommand = {
 
     for (let i = 0; i < topUsers.length; i++) {
       if (i > 10) break
-      reply.push(`${i < position.length ? position[i] : '😥'} **${topUsers[i].name}**: ${topUsers[i]._count.Prompt} prompts (${topUsers[i].totalToken} total tokens)`)
+      reply.push(`${i < position.length ? position[i] : '😥'} **${topUsers[i].name}**: ${topUsers[i]._count.Prompt} prompts (${formatBigNumber(topUsers[i].totalToken)} total tokens)`)
     }
 
     await interaction.reply('Les meilleurs potes de SoilAPT sont:\n' + reply.join('\n'))
