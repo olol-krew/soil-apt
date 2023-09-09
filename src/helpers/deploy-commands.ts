@@ -1,15 +1,19 @@
-import 'dotenv/config'
-
 import { loadCommands } from './load-commands'
 import { REST, Routes } from 'discord.js'
 
-const {
-  DISCORD_TOKEN,
-  DISCORD_CLIENT_ID,
-  DISCORD_GUILD_ID
-} = process.env
-
 async function deployCommands() {
+  const {
+    DISCORD_TOKEN,
+    DISCORD_CLIENT_ID,
+    DISCORD_GUILD_ID
+  } = Bun.env
+
+  if (
+    DISCORD_TOKEN === undefined ||
+    DISCORD_CLIENT_ID === undefined ||
+    DISCORD_GUILD_ID === undefined
+  ) throw `Missing environment variables, can't deploy.`
+
   const commands = await loadCommands()
   const deployables = commands.map(c => c.data.toJSON())
 

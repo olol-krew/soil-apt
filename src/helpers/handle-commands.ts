@@ -4,7 +4,7 @@ import { APTClient } from "../types";
 export async function handleCommand(interaction: BaseInteraction) {
   if (!interaction.isChatInputCommand()) return
 
-  const command = (interaction.client as APTClient).commands.get(interaction.commandName)
+  const command = (interaction.client as APTClient).commands?.get(interaction.commandName)
 
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`)
