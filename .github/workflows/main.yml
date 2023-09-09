@@ -19,4 +19,4 @@ jobs:
       - name: install
         run: npm install
       - name: ESLint
-        run: "npx eslint ./src"
+        run: npm run lint
