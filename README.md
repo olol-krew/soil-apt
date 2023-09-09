@@ -35,5 +35,3 @@ bun dev
 ```
 bun src/index.ts
 ```
-
-- if you have [`forever`](https://www.npmjs.com/package/forever) installed, you can use `bun prod` to run the bot in the background.
