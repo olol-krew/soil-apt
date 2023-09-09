@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import OpenAI from "openai"
 import { Message } from 'discord.js'
 
@@ -6,7 +5,7 @@ export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
 
-export async function getSystemMessages(message: Message, originalMessage?: Message): Promise<{ role: "function" | "user" | "system" | "assistant", content: string }[]> {
+export async function getSystemMessages(message: Message<boolean>, originalMessage?: Message): Promise<{ role: "function" | "user" | "system" | "assistant", content: string }[]> {
   const systemMessages: { role: "function" | "user" | "system" | "assistant", content: string }[] = [
     {
       role: 'system',
@@ -21,7 +20,7 @@ export async function getSystemMessages(message: Message, originalMessage?: Mess
     }
   ]
 
-  if (message.reference) {
+  if (message.reference && originalMessage) {
     systemMessages.push({
       role: 'system',
       content: `Tu répondras en sachant que l'utilisateur, ${message.author.displayName} a un ami qui s'appelle ${originalMessage.author.displayName}. ${message.author.displayName} vient te voir après que ${originalMessage.author.displayName} a dit "${originalMessage.content}".`

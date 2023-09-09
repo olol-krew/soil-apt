@@ -14,12 +14,10 @@ SoilAPT is a Discord bot made for friends. It uses ChatGPT and has basically 2 f
 ## Get started
 
 - clone this repository
-- install dependencies with `npm i`
-- create a `.env` file :point_down:
+- edit the .env file with your own keys
 
 ```
-OPENAI_API_KEY=<your OpenAI Api key>
-DISCORD_TOKEN=<A token from your bot in the Discord developer portal>
+cp .env.dist .env
 ```
 
 ## Dev
@@ -27,15 +25,13 @@ DISCORD_TOKEN=<A token from your bot in the Discord developer portal>
 - Start the bot in watch mode
 
 ```
-npm run dev
+bun dev
 ```
 
 ## Prod
 
-- You'll need to compile the Typescript files and run `dist/index.js`
+- No need to transpile with Bun
 
 ```
-tsc && node dist/index.js
+bun src/index.ts
 ```
-
-- if you have [`forever`](https://www.npmjs.com/package/forever) installed, you can use `npm run prod` to run the bot in the background.

@@ -1,5 +1,3 @@
-import 'dotenv/config'
-
 import { Client, Events, GatewayIntentBits, Message, Collection } from 'discord.js'
 
 import { APTClient } from './types'
@@ -22,7 +20,7 @@ async function run() {
 
   client.commands = new Collection()
   const loadedCommands = await loadCommands()
-  loadedCommands.map(c => client.commands.set(c.data.name, c))
+  loadedCommands.map(c => client.commands?.set(c.data.name, c))
 
   client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message))
   client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))

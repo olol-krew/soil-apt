@@ -7,14 +7,18 @@ import { BotCommand } from '../types'
  */
 export async function loadCommands() {
   const commandsPath = join(__dirname, '../commands')
-  const commandFiles = readdirSync(commandsPath).filter(file => file.endsWith('.js'))
+  console.log(commandsPath)
+  let commandFiles = readdirSync(commandsPath)
+  console.log(commandFiles)
+
+  commandFiles = commandFiles.filter(file => file.endsWith('.ts'))
 
   const commands: BotCommand[] = []
 
   for (const file of commandFiles) {
     const filePath = join(commandsPath, file)
     console.log(`Importing ${filePath}`)
-    const command: BotCommand = (await import(filePath)).default.default
+    const command: BotCommand = (await import(filePath)).default
 
     if ('data' in command && 'execute' in command) {
       commands.push(command)

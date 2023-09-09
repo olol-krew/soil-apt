@@ -1,15 +1,15 @@
 import { Message } from "discord.js";
-import { appendFile } from "node:fs";
 
 import { APTClient } from "../types";
-import { prisma } from "../prisma/prisma";
 import { getSystemMessages, openai } from "./open-ai";
 
+import { db } from "../data/database";
+
 export async function handlePrompt(client: APTClient, message: Message) {
-  if (!message.content.startsWith(`<@${client.user.id}>`))
+  if (!message.content.startsWith(`<@${client.user?.id}>`))
     return
 
-  let originalMessage = null
+  let originalMessage = undefined
   if (message.reference) {
     originalMessage = await message.fetchReference()
   }
@@ -20,44 +20,25 @@ export async function handlePrompt(client: APTClient, message: Message) {
         ...await getSystemMessages(message, originalMessage),
         {
           role: 'user',
-          content: message.content.replace(`<@${client.user.id}`, '')
+          content: message.content.replace(`<@${client.user?.id}`, '')
         }
       ],
       temperature: 0.7,
       model: 'gpt-3.5-turbo',
     })
 
-    const prompt = await prisma.prompt.create({
-      data: {
-        author: {
-          connectOrCreate: {
-            where: {
-              id: message.author.id
-            },
-            create: {
-              name: message.author.globalName || message.author.displayName,
-              avatar: message.author.avatar,
-              id: message.author.id
-            }
-          }
-        },
-        input: message.content,
-        isResponse: originalMessage != null,
-        responseTo: originalMessage && originalMessage.content,
-        output: chatResponse.choices[0].message.content,
-        inputToken: chatResponse.usage.prompt_tokens,
-        outputToken: chatResponse.usage.completion_tokens,
-        createdAt: new Date()
-      }
-    })
+    const user = db.user.get(message.author.id)
+    if (!user) db.user.create(message.author)
+
+    console.log(user)
+
+    const prompt = await db.prompt.create(message, chatResponse)
 
     console.log(prompt)
-    message.reply(chatResponse.choices[0].message.content)
+    message.reply(chatResponse.choices[0].message.content || `Désolé, il y a eu un problème avec la requête, contactez Nico.`)
 
   } catch (error) {
     console.error(error)
-    appendFile('errors.log', JSON.stringify(error), err => {
-      if (err) throw err
-    })
   }
 }
+
