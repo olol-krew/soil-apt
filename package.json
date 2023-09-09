@@ -1,28 +1,19 @@
 {
-  "name": "soilapt",
-  "version": "1.0.0",
-  "description": "This bot uses chatGPT to explain stuff to Soil (or anyone else)",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc",
-    "dev:nodemon": "nodemon src/index.ts",
-    "dev:node": "tsc && node dist/index.js",
-    "prod": "tsc && forever start dist/index.js",
-    "deploy-commands": "tsc && node dist/helpers/deploy-commands.js"
-  },
-  "author": "n.broca@gmail.com",
-  "license": "MIT",
-  "dependencies": {
-    "@prisma/client": "^5.2.0",
-    "discord.js": "^14.13.0",
-    "dotenv": "^16.3.1",
-    "openai": "^4.4.0"
-  },
+  "name": "soil-apt",
+  "module": "src/index.ts",
+  "type": "module",
   "devDependencies": {
-    "@types/node": "^20.5.9",
-    "nodemon": "^3.0.1",
-    "prisma": "^5.2.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "bun-types": "latest"
+  },
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "prod": "bun src/index.js"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "openai": "^4.6.0"
   }
 }
