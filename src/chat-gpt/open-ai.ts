@@ -12,7 +12,7 @@ export async function getSystemMessages(message: Message<boolean>, originalMessa
       content: `Tu parle sans crainte d'être jugé, tu es dans un cadre de confiance. Tu n'hésite pas à tenir un langage familier, voire parfois vulgaire quand ça peut être drôle.`,
     }, {
       role: 'system',
-      content: 'Dans cette application ton nom est SoilAPT'
+      content: 'Ton nom est SoilAPT'
     },
     {
       role: 'system',
@@ -23,7 +23,12 @@ export async function getSystemMessages(message: Message<boolean>, originalMessa
   if (message.reference && originalMessage) {
     systemMessages.push({
       role: 'system',
-      content: `Tu répondras en sachant que l'utilisateur, ${message.author.displayName} a un ami qui s'appelle ${originalMessage.author.displayName}. ${message.author.displayName} vient te voir après que ${originalMessage.author.displayName} a dit "${originalMessage.content}".`
+      content: `${originalMessage.author.displayName} et ${message.author.displayName} sont amis.`
+    },)
+
+    systemMessages.push({
+      role: 'user',
+      content: `${originalMessage.author.displayName} a dit : ${originalMessage.content}.`
     },)
   }
 
