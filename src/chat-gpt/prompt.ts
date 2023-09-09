@@ -15,7 +15,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
   }
 
   try {
-    const chatResponse = await openai.chat.completions.create({
+    let chatResponse = await openai.chat.completions.create({
       messages: [
         ...await getSystemMessages(message, originalMessage),
         {
