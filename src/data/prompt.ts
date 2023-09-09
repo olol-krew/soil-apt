@@ -21,6 +21,12 @@ export interface PromptCount {
   promptCount: number
 }
 
+export interface UsageCount {
+  inputTokenCount: number
+  outputTokenCount: number
+  promptCount: number
+}
+
 export default class PromptTable {
   db: Database
 
@@ -86,5 +92,16 @@ export default class PromptTable {
     `).all({
       $limit: limit
     })
+  }
+
+  countUsageTokens() {
+    return this.db.query<UsageCount, SQLQueryBindings[]>(`
+      SELECT 
+          SUM(inputToken) as inputTokenCount,
+          SUM(outputToken) as outputTokenCount,
+          COUNT(*) as promptCount
+      FROM
+          Prompt;
+    `).get()
   }
 }
