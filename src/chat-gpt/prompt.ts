@@ -20,7 +20,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
         ...await getSystemMessages(message, originalMessage),
         {
           role: 'user',
-          content: message.content.replace(`<@${client.user?.id}`, '')
+          content: message.content.replace(`<@${client.user?.id}> `, '')
         }
       ],
       temperature: 0.7,
