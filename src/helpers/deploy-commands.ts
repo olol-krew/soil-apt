@@ -21,7 +21,7 @@ async function deployCommands() {
 
   try {
     console.log(`Deploying ${commands.length} commands.`)
-    const data = await rest.put(
+    await rest.put(
       Routes.applicationGuildCommands(DISCORD_CLIENT_ID, DISCORD_GUILD_ID),
       { body: deployables }
     )

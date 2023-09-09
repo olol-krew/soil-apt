@@ -21,7 +21,7 @@ const topCommand: BotCommand = {
     })
 
     const reply: string[] = []
-    let position = ['🥇', '🥈', '🥉']
+    const position = ['🥇', '🥈', '🥉']
 
     for (let i = 0; i < topUsers.length; i++) {
       reply.push(`${i < position.length ? position[i] : '😥'} **${topUsers[i].user}**: ${topUsers[i].promptCount} prompts (${formatBigNumber(topUsers[i].totalToken)} total tokens)`)
