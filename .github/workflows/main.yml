@@ -17,8 +17,6 @@ jobs:
           node-version: "14"
           cache: "npm"
       - name: install
-        run: yarn install
+        run: npm install
       - name: ESLint
-        run: yarn run fix .
-      - name: Prettier
-        run: yarn prettier --write
+        run: npx eslint --fix ./src
