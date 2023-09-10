@@ -13,7 +13,7 @@ const WARN_COLOR = chalk.yellow
 const ERROR_COLOR = chalk.red
 const DEBUG_COLOR = chalk.cyan
 
-export default class Logger {
+class Logger {
   #level: LogLevel[]
   #logFile: PathLike | undefined
   #writer: FileSink | undefined
@@ -81,3 +81,5 @@ export default class Logger {
     return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}.${time.getMilliseconds()}`
   }
 }
+
+export const log = new Logger({ logFile: `soilapt-${new Date().toISOString()}.log` })

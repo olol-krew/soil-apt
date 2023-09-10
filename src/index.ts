@@ -4,10 +4,14 @@ import { APTClient } from './types'
 import { loadCommands } from './helpers/load-commands'
 import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
+import { log } from './helpers/logger'
 
 const { DISCORD_TOKEN } = process.env
 
-if (DISCORD_TOKEN === undefined) throw `A Discord bot token is necessary.`
+if (DISCORD_TOKEN === undefined) {
+  log.error('No Discord token given')
+  throw `A Discord bot token is necessary.`
+}
 
 async function run() {
   const client: APTClient = new Client({
@@ -26,7 +30,7 @@ async function run() {
   client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
 
   client.once(Events.ClientReady, c => {
-    console.log(`Ready! Logged in as ${c.user.tag}`)
+    log.info(`Ready! Logged in as ${c.user.tag}`)
   })
 
   client.login(DISCORD_TOKEN)

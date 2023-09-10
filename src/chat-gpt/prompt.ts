@@ -4,6 +4,7 @@ import { APTClient } from "../types";
 import { getSystemMessages, openai } from "./open-ai";
 
 import { db } from "../data/database";
+import { log } from "../helpers/logger";
 
 export async function handlePrompt(client: APTClient, message: Message) {
   if (!message.content.startsWith(`<@${client.user?.id}>`))
@@ -30,14 +31,12 @@ export async function handlePrompt(client: APTClient, message: Message) {
     const user = db.user.get(message.author.id)
     if (!user) db.user.create(message.author)
 
-    console.log(user)
-
     const prompt = await db.prompt.create(message, chatResponse)
 
-    console.log(prompt)
+    log.info(`Prompt received from ${message.author.displayName}. Input token: ${prompt?.inputToken}, output token: ${prompt?.outputToken}`)
     message.reply(chatResponse.choices[0].message.content || `Désolé, il y a eu un problème avec la requête, contactez Nico.`)
 
   } catch (error) {
-    console.error(error)
+    log.error(error)
   }
 }
