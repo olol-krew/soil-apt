@@ -23,6 +23,6 @@ jobs:
             cd soil-apt
             git checkout main
             git pull
-            bun install
-            bun src/helpers/deploy-commands.ts
+            /home/kaboum/.bun/bin/bun install
+            /home/kaboum/.bun/bin/bun src/helpers/deploy-commands.ts
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt start
