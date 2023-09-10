@@ -13,6 +13,10 @@ if (DISCORD_TOKEN === undefined) {
   throw `A Discord bot token is necessary.`
 }
 
+if (Bun.env.DISCORD_GUILD_ID === undefined) {
+  log.warn(`DISCORD_GUILD_ID is not defined your environment or .env* file. This is not critical for the bot to work but you won't be able to deploy the commands if they're not on your target server.`)
+}
+
 async function run() {
   const client: APTClient = new Client({
     intents: [
