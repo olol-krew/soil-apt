@@ -10,6 +10,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
   if (!message.content.startsWith(`<@${client.user?.id}>`))
     return
 
+  log.info(`Prompt received from ${message.author.displayName}.`)
   let originalMessage = undefined
   if (message.reference) {
     originalMessage = await message.fetchReference()
@@ -33,9 +34,8 @@ export async function handlePrompt(client: APTClient, message: Message) {
 
     const prompt = await db.prompt.create(message, chatResponse)
 
-    log.info(`Prompt received from ${message.author.displayName}. Input token: ${prompt?.inputToken}, output token: ${prompt?.outputToken}`)
+    log.info(`Response from OpenAI received. Input token: ${prompt?.inputToken}, output token: ${prompt?.outputToken}. Replying...`)
     message.reply(chatResponse.choices[0].message.content || `Désolé, il y a eu un problème avec la requête, contactez Nico.`)
-
   } catch (error) {
     log.error(error)
   }
