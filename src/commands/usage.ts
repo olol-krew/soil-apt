@@ -6,6 +6,7 @@ import { formatBigNumber, formatDollarAmount } from "../helpers/format-big-numbe
 
 const INPUT_TOKEN_PRICE_PER_THOUSAND = 0.0015;
 const OUTPUT_TOKEN_PRICE_PER_THOUSAND = 0.002;
+const MISSED_AMOUNT_FROM_DATA = 0.43
 
 const usageCommand: BotCommand = {
   data: new SlashCommandBuilder()
@@ -29,9 +30,9 @@ const usageCommand: BotCommand = {
     const reply: string[] = []
 
     reply.push(`- ${formatBigNumber(usageCounts?.promptCount)} prompts envoyés`)
-    reply.push(`- ${formatBigNumber(usageCounts?.inputTokenCount)} input tokens, soit ${formatDollarAmount(inputPrice)}`)
-    reply.push(`- ${formatBigNumber(usageCounts?.outputTokenCount)} output tokens, soit ${formatDollarAmount(outputPrice)}`)
-    reply.push(`Soit un total de ${formatDollarAmount(inputPrice + outputPrice)}`)
+    reply.push(`- ${formatBigNumber(usageCounts?.inputTokenCount)} input tokens comptabilisés, soit ${formatDollarAmount(inputPrice)}`)
+    reply.push(`- ${formatBigNumber(usageCounts?.outputTokenCount)} output tokens comptabilisés, soit ${formatDollarAmount(outputPrice)}`)
+    reply.push(`Soit un total de ${formatDollarAmount(inputPrice + outputPrice + MISSED_AMOUNT_FROM_DATA)} (en ajoutant les manqués)`)
 
     await interaction.reply('Les statistiques API du bot sont :\n' + reply.join('\n'))
   }
