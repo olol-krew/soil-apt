@@ -8,7 +8,6 @@ export interface LoggerOptions {
 
 type LogLevel = "debug" | "info" | "warn" | "error"
 
-
 const INFO_COLOR = chalk.blue
 const WARN_COLOR = chalk.yellow
 const ERROR_COLOR = chalk.red
