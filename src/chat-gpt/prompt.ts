@@ -41,4 +41,3 @@ export async function handlePrompt(client: APTClient, message: Message) {
     console.error(error)
   }
 }
-
