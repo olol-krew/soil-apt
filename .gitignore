@@ -170,3 +170,4 @@ dist
 
 # db
 soilaptdb.db
+*.log
