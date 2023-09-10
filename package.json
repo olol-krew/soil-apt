@@ -3,10 +3,16 @@
   "module": "src/index.ts",
   "type": "module",
   "devDependencies": {
-    "bun-types": "latest"
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "bun-types": "latest",
+    "eslint": "^8.49.0"
   },
   "scripts": {
-    "dev": "bun --watch src/index.ts"
+    "dev": "bun --watch src/index.ts",
+    "prod": "bun src/index.js",
+    "lint": "eslint ./src",
+    "lint-fix": "eslint --fix ./src"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

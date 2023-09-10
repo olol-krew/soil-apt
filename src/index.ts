@@ -10,7 +10,7 @@ const { DISCORD_TOKEN } = process.env
 if (DISCORD_TOKEN === undefined) throw `A Discord bot token is necessary.`
 
 async function run() {
-  let client: APTClient = new Client({
+  const client: APTClient = new Client({
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
