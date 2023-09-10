@@ -74,11 +74,11 @@ class Logger {
   }
 
   #getDateString(time: Date) {
-    return `${time.getDate()}-${time.getMonth()}-${time.getFullYear()}`
+    return `${time.getDate().toLocaleString('fr-FR', { minimumIntegerDigits: 2 })}-${time.getMonth().toLocaleString('fr-FR', { minimumIntegerDigits: 2 })}-${time.getFullYear()}`
   }
 
   #getTimeString(time: Date) {
-    return `${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}.${time.getMilliseconds()}`
+    return `${time.getHours().toLocaleString('fr-FR', { minimumIntegerDigits: 2 })}:${time.getMinutes().toLocaleString('fr-FR', { minimumIntegerDigits: 2 })}:${time.getSeconds().toLocaleString('fr-FR', { minimumIntegerDigits: 2 })}.${time.getMilliseconds()}`
   }
 }
 
