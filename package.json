@@ -18,6 +18,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "chalk": "^5.3.0",
     "discord.js": "^14.13.0",
     "openai": "^4.6.0"
   }
