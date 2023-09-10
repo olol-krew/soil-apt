@@ -82,4 +82,4 @@ class Logger {
   }
 }
 
-export const log = new Logger({ logFile: `soilapt-${new Date().toISOString()}.log` })
+export const log = new Logger({ logFile: Bun.env.NODE_ENV === 'PROD' ? `soilapt-${new Date().toISOString()}.log` : undefined })
