@@ -1,6 +1,6 @@
 /*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
 
-import { BunFile, FileSink } from 'bun'
+import { FileSink } from 'bun'
 import chalk, { ChalkInstance } from 'chalk'
 
 export interface LoggerOptions {
@@ -38,23 +38,23 @@ class Logger {
     this.#writer = this.#logFile ? Bun.file(this.#logFile).writer() : undefined
   }
 
-  info(...args: any) {
+  info(...args: any[]) {
     this.#log('info', INFO_COLOR, ...args)
   }
 
-  warn(...args: any) {
+  warn(...args: any[]) {
     this.#log('warn', WARN_COLOR, ...args)
   }
 
-  error(...args: any) {
+  error(...args: any[]) {
     this.#log('error', ERROR_COLOR, ...args)
   }
 
-  debug(...args: any) {
+  debug(...args: any[]) {
     this.#log('debug', DEBUG_COLOR, ...args)
   }
 
-  #log(level: "debug" | "info" | "warn" | "error", color: ChalkInstance, ...content: any) {
+  #log(level: "debug" | "info" | "warn" | "error", color: ChalkInstance, ...content: any[]) {
     if (!this.#level.includes(level)) return
 
     if (this.#writer !== undefined) {
@@ -69,10 +69,10 @@ class Logger {
     return (includeDate ? this.#getDateString(time) + ' ' : '') + this.#getTimeString(time)
   }
 
-  #getLogString(logOptions: { level: "debug" | "info" | "warn" | "error", color?: ChalkInstance }, ...content: any) {
+  #getLogString(logOptions: { level: "debug" | "info" | "warn" | "error", color?: ChalkInstance }, ...content: any[]) {
     return logOptions.color
-      ? `${this.#getTimeStamp()} ${logOptions.color(logOptions.level.toUpperCase())} - ${content.map((c: any) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
-      : `${this.#getTimeStamp()} ${logOptions.level.toUpperCase()} - ${content.map((c: any) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
+      ? `${this.#getTimeStamp()} ${logOptions.color(logOptions.level.toUpperCase())} - ${content.map((c) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
+      : `${this.#getTimeStamp()} ${logOptions.level.toUpperCase()} - ${content.map((c) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
   }
 
   #getDateString(time: Date) {
