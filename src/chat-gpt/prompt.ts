@@ -1,7 +1,7 @@
 import { Message } from "discord.js";
 
 import { APTClient } from "../types";
-import { getSystemMessages, openai } from "./open-ai";
+import { createContext, openai } from "./open-ai";
 
 import { db } from "../data/database";
 import { log } from "../helpers/logger";
@@ -11,15 +11,11 @@ export async function handlePrompt(client: APTClient, message: Message) {
     return
 
   log.info(`Prompt received from ${message.author.displayName}.`)
-  let originalMessage = undefined
-  if (message.reference) {
-    originalMessage = await message.fetchReference()
-  }
 
   try {
     const chatResponse = await openai.chat.completions.create({
       messages: [
-        ...await getSystemMessages(message, originalMessage),
+        ...await createContext(message, client),
         {
           role: 'user',
           content: message.content.replace(`<@${client.user?.id}> `, '')
