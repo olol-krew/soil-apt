@@ -1,3 +1,5 @@
+/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
+
 import { BunFile, FileSink } from 'bun'
 import chalk, { ChalkInstance } from 'chalk'
 
