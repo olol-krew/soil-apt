@@ -1,6 +1,8 @@
 import { loadCommands } from './load-commands'
 import { REST, Routes } from 'discord.js'
 
+import { log } from './logger'
+
 async function deployCommands() {
   const {
     DISCORD_TOKEN,
@@ -12,7 +14,10 @@ async function deployCommands() {
     DISCORD_TOKEN === undefined ||
     DISCORD_CLIENT_ID === undefined ||
     DISCORD_GUILD_ID === undefined
-  ) throw `Missing environment variables, can't deploy.`
+  ) {
+    log.error(`Missing environment variables, can't deploy.`)
+    throw `Missing environment variables, can't deploy.`
+  }
 
   const commands = await loadCommands()
   const deployables = commands.map(c => c.data.toJSON())
@@ -27,7 +32,7 @@ async function deployCommands() {
     )
 
     console.log(`Deployment successful`)
-  } catch (error) { console.log(error) }
+  } catch (error) { log.error(error) }
 }
 
 deployCommands()
