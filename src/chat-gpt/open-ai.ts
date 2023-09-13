@@ -44,7 +44,5 @@ export async function createContext(message: Message<boolean>, client: APTClient
     }
   }
 
-  console.log(systemMessages)
-
   return systemMessages
 }
