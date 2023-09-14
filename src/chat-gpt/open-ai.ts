@@ -1,6 +1,7 @@
 import OpenAI from "openai"
 import { Message } from 'discord.js'
 import { APTClient } from "../types"
+import { db } from "../data/database"
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -20,7 +21,7 @@ export async function createContext(message: Message<boolean>, client: APTClient
   const systemMessages: { role: "function" | "user" | "system" | "assistant", content: string }[] = [
     {
       role: 'system',
-      content: `Tu parle sans crainte d'être jugé, tu es dans un cadre de confiance, avec des amis. Tu n'hésite pas à tenir un langage familier, voire parfois vulgaire quand ça peut être drôle.`,
+      content: db.persona.get(db.potd.getMostRecent()!.personaId)!.prompt
     }, {
       role: 'system',
       content: `Ton nom est SoilAPT. Les gens t'appellent aussi <@${client.user?.id}> mais tu n'utilise absolument jamais ce nom pour parler de toi.`
