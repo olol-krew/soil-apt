@@ -5,8 +5,9 @@ import { createContext, openai } from "./open-ai";
 
 import { db } from "../data/database";
 import { log } from "../helpers/logger";
+import { Persona } from "../data/persona";
 
-export async function handlePrompt(client: APTClient, message: Message) {
+export async function handlePrompt(client: APTClient, message: Message, persona: Persona) {
   if (!message.content.startsWith(`<@${client.user?.id}>`))
     return
 
@@ -15,7 +16,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
   try {
     const chatResponse = await openai.chat.completions.create({
       messages: [
-        ...await createContext(message, client),
+        ...await createContext(message, client, persona),
         {
           role: 'user',
           content: message.content.replace(`<@${client.user?.id}> `, '')

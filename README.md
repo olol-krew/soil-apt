@@ -31,9 +31,17 @@ cp .env.dist .env
   ```
 - Start the bot in watch mode
 
-```
-bun dev
-```
+  ```
+  bun dev
+  ```
+
+- To force the use of a specific persona, first get its ID from the list of personas in `src/data/personas.yml`, then pass it with the `--force-persona <ID>` flag
+
+  Example
+
+  ```
+  bun dev --force-persona 3
+  ```
 
 ## Prod
 

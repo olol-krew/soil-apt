@@ -1,13 +1,13 @@
 import OpenAI from "openai"
 import { Message } from 'discord.js'
 import { APTClient } from "../types"
-import { db } from "../data/database"
+import { Persona } from "../data/persona"
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
 
-export async function createContext(message: Message<boolean>, client: APTClient): Promise<{ role: "function" | "user" | "system" | "assistant", content: string }[]> {
+export async function createContext(message: Message<boolean>, client: APTClient, persona: Persona): Promise<{ role: "function" | "user" | "system" | "assistant", content: string }[]> {
   const previously: Message[] = []
   const promptUser = message.author
 
@@ -21,7 +21,7 @@ export async function createContext(message: Message<boolean>, client: APTClient
   const systemMessages: { role: "function" | "user" | "system" | "assistant", content: string }[] = [
     {
       role: 'system',
-      content: db.persona.get(db.potd.getMostRecent()!.personaId)!.prompt
+      content: persona.prompt
     }, {
       role: 'system',
       content: `Ton nom est SoilAPT. Les gens t'appellent aussi <@${client.user?.id}> mais tu n'utilise absolument jamais ce nom pour parler de toi.`
