@@ -2,8 +2,9 @@
 
 SoilAPT is a Discord bot made for friends. It uses ChatGPT and has basically 2 functions:
 
-- Start a message with `@SoilAPT` to prompt something to ChatGPT as you normally would. ChatGPT will have the personnality of a slightly rude friend.
-- Create a response message starting with `@SoilAPT` from another message and prompt something about it as context.
+- Start a message with `@SoilAPT` to prompt something to ChatGPT as you normally would.
+- Create a response message starting with `@SoilAPT` from another message and prompt something about it as context. The bot will get all the responses of responses too, so you can have a conversation as in the web UI.
+- SoilAPT has a personality disorder. Everyday at midnight, it will randomly pick from a list of personas made by my community of friends.
 
 ## Pre-requirements
 
@@ -22,7 +23,7 @@ cp .env.dist .env
 
 ## Dev
 
-- Deploy the commands on you dev server (only the first time and each timne you create a new command):
+- Deploy the commands on you dev server (only the first time and each time you create a new command):
   - [Get your dev server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-#:~:text=Obtaining%20Server%20IDs%20%2D%20Mobile%20App,name%20and%20select%20Copy%20ID.)
   - Add it as `DISCORD_GUILD_ID` in your environment or `.env` file
   - run the deployment script
