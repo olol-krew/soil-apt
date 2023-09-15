@@ -1,5 +1,4 @@
 import { db } from "../data/database";
-import { Arguments } from "yargs-parser";
 import { log } from "./logger";
 import isToday from "./is-today";
 import { DateTime } from "luxon";

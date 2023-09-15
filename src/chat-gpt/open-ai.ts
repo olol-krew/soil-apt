@@ -1,7 +1,6 @@
 import OpenAI from "openai"
 import { Message } from 'discord.js'
 import { APTClient } from "../types"
-import { db } from "../data/database"
 import { Persona } from "../data/persona"
 
 export const openai = new OpenAI({
