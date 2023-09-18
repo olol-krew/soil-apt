@@ -5,7 +5,6 @@ import { createContext, openai } from "./open-ai";
 
 import { db } from "../data/database";
 import { log } from "../helpers/logger";
-import { Persona } from "../data/persona";
 import { loadPotd } from "../helpers/potd-helpers";
 
 export async function handlePrompt(client: APTClient, message: Message) {
