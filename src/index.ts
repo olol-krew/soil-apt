@@ -7,7 +7,7 @@ import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
 import { log } from './helpers/logger'
 import { db } from './data/database'
-import { loadPotd, pickNewPotd } from './helpers/potd-helpers'
+import { forcePotdChange, pickNewPotd } from './helpers/potd-helpers'
 import parseArgs from './helpers/arg-parser'
 
 const { DISCORD_TOKEN } = process.env
@@ -32,10 +32,6 @@ async function run() {
     ]
   })
 
-  client.commands = new Collection()
-  const loadedCommands = await loadCommands()
-  loadedCommands.map(c => client.commands?.set(c.data.name, c))
-
   log.info('Loading personas...')
   const personaCount = await db.persona.load()
 
@@ -46,7 +42,9 @@ async function run() {
 
   log.info(`Loaded ${personaCount} personas for the bot.`)
 
-  let potd = loadPotd({ forcePersonaId: args.forcePersona })
+  client.commands = new Collection()
+  const loadedCommands = await loadCommands()
+  loadedCommands.map(c => client.commands?.set(c.data.name, c))
 
   const potdJob = new CronJob('0 0 * * *', () => {
     log.info(`Picking a new persona of the day`)
@@ -60,11 +58,16 @@ async function run() {
 
     const persona = db.persona.get(newPotd!.personaId)
     log.info(`New POTD is ${db.persona.get(newPotd!.personaId)?.title}`)
-    potd = persona!
+    forcePotdChange(persona!)
   }, null, false, 'Europe/Paris')
   potdJob.start()
 
-  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message, potd))
+  if (args.forcePersona) {
+    const forcedPersona = db.persona.get(args.forcePersona);
+    forcedPersona && forcePotdChange(forcedPersona)
+  }
+
+  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message))
   client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
 
   client.once(Events.ClientReady, c => {
