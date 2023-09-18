@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, Client, Collection, ChatInputCommandInteraction } from "discord.js"
 
 export interface BotCommand {
-  data: SlashCommandBuilder
+  data: SlashCommandBuilder | Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">
   execute: (interaction: ChatInputCommandInteraction) => Promise<void>
 }
 
