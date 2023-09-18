@@ -8,7 +8,7 @@ import { forcePotdChange } from "../helpers/potd-helpers"
 if (0 === db.persona.getCount()) {
     await db.persona.load()
 }
-const personasChoices = db.persona.getAll().map((persona: Persona): APIApplicationCommandOptionChoice<number> => ({name: persona.title, value: Math.floor(persona.id) }));
+const personasChoices = db.persona.getAll().map((persona: Persona): APIApplicationCommandOptionChoice<number> => ({name: persona.title, value: +persona.id }));
 
 const choosePersonaCommand: BotCommand = {
   data: new SlashCommandBuilder()

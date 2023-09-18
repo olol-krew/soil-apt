@@ -7,7 +7,7 @@ import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
 import { log } from './helpers/logger'
 import { db } from './data/database'
-import { forcePotdChange, loadPotd, pickNewPotd } from './helpers/potd-helpers'
+import { forcePotdChange, pickNewPotd } from './helpers/potd-helpers'
 import parseArgs from './helpers/arg-parser'
 
 const { DISCORD_TOKEN } = process.env
@@ -62,7 +62,12 @@ async function run() {
   }, null, false, 'Europe/Paris')
   potdJob.start()
 
-  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message, loadPotd({ forcePersonaId: args.forcePersona })))
+  if (args.forcePersona) {
+    const forcedPersona = db.persona.get(args.forcePersona);
+    forcedPersona && forcePotdChange(forcedPersona)
+  }
+
+  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message))
   client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
 
   client.once(Events.ClientReady, c => {
