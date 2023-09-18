@@ -8,6 +8,10 @@ export interface Persona {
   prompt: string
 }
 
+interface PersonaCount {
+  count: number
+}
+
 export default class PersonaTable {
   db: Database
 
@@ -60,6 +64,12 @@ export default class PersonaTable {
     `).get({
       $id: id
     })
+  }
+
+  getCount(): number {
+    return this.db.query<PersonaCount, SQLQueryBindings[]>(`
+      SELECT COUNT(id) AS count FROM Persona
+    `).get()?.count ?? 0
   }
 
   getOneRandomly() {
