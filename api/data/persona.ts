@@ -22,10 +22,11 @@ export default class PersonaTable {
         prompt text NOT NULL
       );
     `)
+    this.load().then(() => console.log('Personas loaded')).catch(err => console.error(err))
   }
 
   async load() {
-    const yamlFile = Bun.file('src/data/personas.yaml')
+    const yamlFile = Bun.file('api/data/personas.yaml')
     const personas = parse(await yamlFile.text())
 
     for (const persona of personas) {
@@ -59,6 +60,20 @@ export default class PersonaTable {
       WHERE id=$id;
     `).get({
       $id: id
+    })
+  }
+
+  create(persona: Persona) {
+    return this.db.query(`
+      INSERT INTO Persona(
+        id, author, title, prompt
+      )
+      VALUES ($id, $author, $title, $prompt);
+    `).run({
+      $id: persona.id,
+      $author: persona.author,
+      $title: persona.title,
+      $prompt: persona.prompt
     })
   }
 

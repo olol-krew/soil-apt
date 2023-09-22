@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "discord.js";
 
 import { BotCommand } from '../types'
-import { db } from "../data/database";
+import { db } from "../../api/data/database";
 import { formatBigNumber, formatDollarAmount } from "../helpers/format-big-number";
 
 const INPUT_TOKEN_PRICE_PER_THOUSAND = 0.0015;

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "discord.js"
 
 import { BotCommand } from '../types'
-import { db } from "../data/database"
+import { db } from "../../api/data/database"
 
 const moodCommand: BotCommand = {
   data: new SlashCommandBuilder()

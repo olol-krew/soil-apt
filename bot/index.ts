@@ -6,7 +6,7 @@ import { loadCommands } from './helpers/load-commands'
 import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
 import { log } from './helpers/logger'
-import { db } from './data/database'
+import { db } from '../api/data/database'
 import { loadPotd, pickNewPotd } from './helpers/potd-helpers'
 import parseArgs from './helpers/arg-parser'
 

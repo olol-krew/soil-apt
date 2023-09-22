@@ -12,7 +12,7 @@ class SoilAptDb {
   potd: PotdTable
 
   constructor() {
-    this.db = new Database("soilaptdb.db", { create: true })
+    this.db = new Database("soilaptdb.db")
     this.prompt = new PromptTable(this.db)
     this.user = new UserTable(this.db)
     this.persona = new PersonaTable(this.db)

@@ -3,9 +3,9 @@ import { Message } from "discord.js";
 import { APTClient } from "../types";
 import { createContext, openai } from "./open-ai";
 
-import { db } from "../data/database";
+import { db } from "../../api/data/database";
 import { log } from "../helpers/logger";
-import { Persona } from "../data/persona";
+import { Persona } from "../../api/data/persona";
 
 export async function handlePrompt(client: APTClient, message: Message, persona: Persona) {
   if (!message.content.startsWith(`<@${client.user?.id}>`))

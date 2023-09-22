@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "discord.js";
 
 import { BotCommand } from '../types'
 import { formatBigNumber } from "../helpers/format-big-number";
-import { db } from "../data/database";
+import { db } from "../../api/data/database";
 
 const topCommand: BotCommand = {
   data: new SlashCommandBuilder()
