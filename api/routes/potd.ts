@@ -12,6 +12,8 @@ potdRouter.get('/', (req, res) => {
     return res.sendStatus(500)
   }
 
+  console.log(potd)
+
   return res.json(potd)
 })
 

@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 
 export interface Potd {
   id: string
-  personaId: number
+  personaId: string
   pickedAt: string
   modifiedAt?: string
 }
@@ -14,7 +14,6 @@ export default class PotdTable {
 
   constructor(db: Database) {
     this.db = db
-    // this.db.run(`DROP TABLE IF EXISTS Potd;`)
     this.db.query(`
       CREATE TABLE IF NOT EXISTS Potd (
         id text PRIMARY KEY NOT NULL,

@@ -1,14 +1,10 @@
 import { Client, Events, GatewayIntentBits, Message, Collection } from 'discord.js'
-import { CronJob } from 'cron'
 
 import { APTClient } from './types'
 import { loadCommands } from './helpers/load-commands'
 import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
 import { log } from '../common/helpers/logger'
-import { db } from '../api/data/database'
-import { loadPotd, pickNewPotd } from './helpers/potd-helpers'
-import parseArgs from './helpers/arg-parser'
 
 const { DISCORD_TOKEN } = process.env
 
@@ -21,57 +17,23 @@ if (Bun.env.DISCORD_GUILD_ID === undefined) {
   log.warn(`DISCORD_GUILD_ID is not defined your environment or .env* file. This is not critical for the bot to work but you won't be able to deploy the commands if they're not on your target server.`)
 }
 
-const args = parseArgs()
+const client: APTClient = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
+})
 
-async function run() {
-  const client: APTClient = new Client({
-    intents: [
-      GatewayIntentBits.Guilds,
-      GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent
-    ]
-  })
+client.commands = new Collection()
+const loadedCommands = await loadCommands()
+loadedCommands.map(c => client.commands?.set(c.data.name, c))
 
-  client.commands = new Collection()
-  const loadedCommands = await loadCommands()
-  loadedCommands.map(c => client.commands?.set(c.data.name, c))
+client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message))
+client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
 
-  log.info('Loading personas...')
-  const personaCount = await db.persona.load()
+client.once(Events.ClientReady, c => {
+  log.info(`Ready! Logged in as ${c.user.tag}`)
+})
 
-  if (personaCount === 0) {
-    log.error('The list of persona is missing from the expected folder (src/data/personas.yml)')
-    throw `No persona found`
-  }
-
-  log.info(`Loaded ${personaCount} personas for the bot.`)
-
-  let potd = loadPotd({ forcePersonaId: args.forcePersona })
-
-  const potdJob = new CronJob('0 0 * * *', () => {
-    log.info(`Picking a new persona of the day`)
-    const currentPotd = db.potd.getMostRecent()
-    let newPotd = pickNewPotd()
-
-    while (newPotd!.personaId === currentPotd!.personaId || !db.persona.get(newPotd!.personaId)) {
-      log.warn(`Invalid persona ID ${newPotd?.personaId}, new attempt.`)
-      newPotd = pickNewPotd()
-    }
-
-    const persona = db.persona.get(newPotd!.personaId)
-    log.info(`New POTD is ${db.persona.get(newPotd!.personaId)?.title}`)
-    potd = persona!
-  }, null, false, 'Europe/Paris')
-  potdJob.start()
-
-  client.on(Events.MessageCreate, async (message: Message) => handlePrompt(client, message, potd))
-  client.on(Events.InteractionCreate, async interaction => handleCommand(interaction))
-
-  client.once(Events.ClientReady, c => {
-    log.info(`Ready! Logged in as ${c.user.tag}`)
-  })
-
-  client.login(DISCORD_TOKEN)
-}
-
-run()
+client.login(DISCORD_TOKEN)

@@ -45,12 +45,19 @@ export default class PromptTable {
     );`)
   }
 
-  get(id: string): Prompt | null {
+  get(id: string) {
     return this.db.query<Prompt, SQLQueryBindings>(`
       SELECT * FROM Prompt WHERE id=$id;
-    `).get({
-      $id: id
-    })
+    `).get({ $id: id })
+  }
+
+  getAll(limit?: number, offset?: number): Prompt[] | null {
+    let query = `SELECT * FROM Prompt`
+    if (limit !== undefined) query += ` LIMIT ${limit}`
+    if (offset !== undefined) query += ` OFFSET ${offset}`
+    query += `;`
+
+    return this.db.query<Prompt, SQLQueryBindings[]>(query).all()
   }
 
   async create(message: Message, chatResponse: ChatCompletion) {

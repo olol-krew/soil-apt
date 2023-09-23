@@ -6,10 +6,14 @@ import { createContext, openai } from "./open-ai";
 import { db } from "../../api/data/database";
 import { log } from "../../common/helpers/logger";
 import { Persona } from "../../api/data/persona";
+import fetchApi from "../helpers/fetch-api";
 
-export async function handlePrompt(client: APTClient, message: Message, persona: Persona) {
+export async function handlePrompt(client: APTClient, message: Message) {
   if (!message.content.startsWith(`<@${client.user?.id}>`))
     return
+
+  const persona = await fetchApi<Persona>('/api/personas/today')
+  if (!persona) return
 
   log.info(`Prompt received from ${message.author.displayName}.`)
 
@@ -25,9 +29,6 @@ export async function handlePrompt(client: APTClient, message: Message, persona:
       temperature: 0.7,
       model: 'gpt-3.5-turbo',
     })
-
-    const user = db.user.get(message.author.id)
-    if (!user) db.user.create(message.author)
 
     const prompt = await db.prompt.create(message, chatResponse)
 

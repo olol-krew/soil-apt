@@ -8,10 +8,17 @@ personaRouter.get('/', (req, res) => {
   res.json(personas)
 })
 
+personaRouter.get('/today', (req, res) => {
+  const potd = db.potd.getMostRecent()
+  if (!potd) return res.sendStatus(500)
+  const persona = db.persona.get(potd.personaId)
+  if (!persona) return res.sendStatus(500)
+  return res.json(persona)
+})
+
 personaRouter.get('/:id', (req, res) => {
   const { id } = req.params
   const persona = db.persona.get(id)
-  console.log(persona)
   return res.json(persona)
 })
 
@@ -21,6 +28,7 @@ personaRouter.post('/', (req, res) => {
   if (!persona) return res.sendStatus(500)
   return res.status(201).json(persona)
 })
+
 
 personaRouter.delete('/:id', (req, res) => {
   const { id } = req.params

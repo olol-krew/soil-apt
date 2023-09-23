@@ -1,5 +1,5 @@
 import Database, { SQLQueryBindings } from "bun:sqlite"
-import { parse } from 'yaml'
+import data from "./personas.toml"
 
 export interface Persona {
   id: string
@@ -13,39 +13,31 @@ export default class PersonaTable {
 
   constructor(db: Database) {
     this.db = db
-    this.db.run(`DROP TABLE IF EXISTS Persona;`)
     this.db.run(`
-      CREATE TABLE Persona (
+      CREATE TABLE IF NOT EXISTS Persona (
         id text PRIMARY KEY NOT NULL,
         author text NOT NULL,
         title text NOT NULL,
         prompt text NOT NULL
       );
     `)
-    this.load().then(() => console.log('Personas loaded')).catch(err => console.error(err))
+    if (this.getAll().length === 0) this.load()
   }
 
-  async load() {
-    const yamlFile = Bun.file('api/data/personas.yaml')
-    const personas = parse(await yamlFile.text())
-
-    for (const persona of personas) {
-      const query = this.db.query(`
+  load() {
+    for (const persona of data.personas) {
+      this.db.query(`
         INSERT INTO Persona (
           id, author, title, prompt
         )
         VALUES ($id, $author, $title, $prompt);
-      `)
-
-      query.run({
-        $id: persona.id,
+      `).run({
+        $id: crypto.randomUUID(),
         $author: persona.author,
         $title: persona.title,
         $prompt: persona.prompt
       })
     }
-
-    return this.getAll().length
   }
 
   getAll() {
@@ -83,9 +75,7 @@ export default class PersonaTable {
 
   getOneRandomly() {
     const personas = this.getAll()
-    const index = Math.floor(Math.random() * personas.length)
-
-    return personas[index]
+    return personas[Math.floor(Math.random() * personas.length)]
   }
 
   delete(id: string) {
