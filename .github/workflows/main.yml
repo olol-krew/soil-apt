@@ -16,5 +16,7 @@ jobs:
           cache: 'npm'
       - name: install
         run: npm install
-      - name: ESLint
-        run: npm run lint
+      - name: lint API
+        run: npm run api:lint
+      - name: lint bot
+        run: npm run bot:lint
