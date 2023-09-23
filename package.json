@@ -6,22 +6,26 @@
     "@typescript-eslint/eslint-plugin": "^6.6.0",
     "@typescript-eslint/parser": "^6.6.0",
     "bun-types": "latest",
-    "eslint": "^8.49.0"
+    "typescript": "^5.0.0",
+    "eslint": "^8.49.0",
+    "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
+    "@types/passport": "^1.0.12",
+    "@types/yargs-parser": "^21.0.0"
   },
   "scripts": {
     "bot:dev": "bun --watch bot/index.ts",
-    "bot:prod": "bun bot/index.js",
+    "bot:prod": "bun bot/index.ts",
     "bot:lint": "eslint ./bot",
     "bot:lint-fix": "eslint --fix ./bot",
-    "api:dev": "bun --watch api/index.ts"
+    "api:dev": "bun --watch api/index.ts",
+    "api:prod": "bun api/index.ts",
+    "api:lint": "eslint ./api",
+    "api:lint-fix": "eslint --fix ./api"
   },
   "peerDependencies": {},
   "dependencies": {
     "-": "^0.0.1",
-    "@types/express": "^4.17.17",
-    "@types/express-session": "^1.17.7",
-    "@types/passport": "^1.0.12",
-    "@types/yargs-parser": "^21.0.0",
     "chalk": "^5.3.0",
     "cron": "^2.4.3",
     "discord.js": "^14.13.0",
@@ -30,9 +34,6 @@
     "luxon": "^3.4.3",
     "openai": "^4.6.0",
     "passport": "^0.6.0",
-    "passport-discord-auth": "^1.1.1",
-    "typescript": "^5.0.0",
-    "yaml": "^2.3.2",
-    "yargs-parser": "^21.1.1"
+    "passport-discord-auth": "^1.1.1"
   }
 }
