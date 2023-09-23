@@ -9,16 +9,20 @@ potdRouter.get('/', (req, res) => {
 
   if (!potd) {
     log.error(`No POTD in DB.`)
-    res.sendStatus(500)
+    return res.sendStatus(500)
   }
 
-  res.json(potd)
+  return res.json(potd)
 })
 
 // potdRouter.get('/:id', (req, res) => { })
 
 potdRouter.put('/:id', (req, res) => {
-  console.log(req.params)
+  const { personaId } = req.body
+  if (!personaId) return res.sendStatus(400)
+  const potd = db.potd.get(req.params.id)
+  if (!potd) return res.sendStatus(404)
+  db.potd.update({ id: potd.id, personaId, pickedAt: potd.pickedAt })
 })
 
 // potdRouter.delete('/:id', (req, res) => { })

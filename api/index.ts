@@ -6,6 +6,7 @@ import "./strategies/discord"
 import authRouter from "./routes/auth"
 import personaRouter from "./routes/personas"
 import potdRouter from "./routes/potd"
+import userRouter from "./routes/users"
 
 const app = express()
 const port = (Bun.env.API_PORT && +Bun.env.API_PORT) || 3001
@@ -27,14 +28,15 @@ app.use((req, res, next) => {
 
 app.use('/api/auth', authRouter)
 
-personaRouter.use((req, res, next) => {
-  // if (!req.ip === 'localhost') next()
-  if (!req.user) res.sendStatus(401)
-  next()
+app.use((req, res, next) => {
+  if (req.ip === 'localhost' /*&& req.get('User-Agent') === 'SoilAPT-bot'*/) next()
+  if (!req.user) return res.sendStatus(401)
+  else next()
 })
 
 app.use('/api/personas', personaRouter)
 app.use('/api/potd', potdRouter)
+app.use('/api/users', userRouter)
 
 app.listen(port, () => {
   console.log(`API server listening on port ${port}.`)

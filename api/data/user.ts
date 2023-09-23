@@ -12,7 +12,7 @@ export interface APTUser {
   refreshToken: string
   createdAt: string
   updatedAt?: string
-  isGuildMember: boolean
+  isGuildMember: number
 }
 
 // override Express User type with ours
@@ -30,7 +30,7 @@ declare global {
       refreshToken: string
       createdAt: string
       updatedAt?: string
-      isGuildMember: boolean
+      isGuildMember: number
     }
   }
 }
@@ -60,7 +60,7 @@ export default class UserTable {
 
   constructor(db: Database) {
     this.db = db
-    this.db.run(`DROP TABLE IF EXISTS User;`)
+    // this.db.run(`DROP TABLE IF EXISTS User;`)
     this.db.run(`CREATE TABLE IF NOT EXISTS User(
       id text PRIMARY KEY NOT NULL UNIQUE,
       discordId text NOT NULL,
@@ -87,6 +87,7 @@ export default class UserTable {
     guilds
   }: DiscordUser) {
     const id = crypto.randomUUID()
+
     this.db.query<APTUser, SQLQueryBindings>(`
       INSERT INTO User (
         id,
@@ -122,7 +123,7 @@ export default class UserTable {
       $accessToken: accessToken,
       $refreshToken: refreshToken,
       $createdAt: DateTime.now().setZone('Europe/Paris').toISO(),
-      $isGuildMember: guilds ? guilds.filter(g => g.id === Bun.env.DISCORD_GUILD_ID).length > 0 : false
+      $isGuildMember: guilds && guilds.filter(g => g.id === Bun.env.DISCORD_GUILD_ID).length > 0 || false
     })
 
     return this.get(id)
@@ -180,7 +181,7 @@ export default class UserTable {
     return this.get(id)
   }
 
-  delete({ id }: APTUser) {
+  delete(id: string) {
     return this.db.query(`
       DELETE FROM User
       WHERE id=$id

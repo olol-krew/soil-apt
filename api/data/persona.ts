@@ -105,7 +105,7 @@ export default class PersonaTable {
         title=$title,
         prompt=$prompt,
       WHERE
-        id=$id
+        id=$id;
     `).run({
       $id: persona.id,
       $author: persona.author,

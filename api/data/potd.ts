@@ -5,7 +5,8 @@ import { DateTime } from "luxon";
 export interface Potd {
   id: string
   personaId: number
-  datePicked: string
+  pickedAt: string
+  modifiedAt?: string
 }
 
 export default class PotdTable {
@@ -18,26 +19,27 @@ export default class PotdTable {
       CREATE TABLE IF NOT EXISTS Potd (
         id text PRIMARY KEY NOT NULL,
         personaId INTEGER NOT NULL,
-        datePicked text NOT NULL
+        pickedAt text NOT NULL,
+        modifiedAt text
       );
     `).run()
   }
 
   create(persona: Persona) {
     return this.db.query(`
-      INSERT INTO Potd (id, personaId, datePicked)
-      VALUES ($id, $personaId, $datePicked);
+      INSERT INTO Potd (id, personaId, pickedAt)
+      VALUES ($id, $personaId, $pickedAt);
     `).run({
       $id: crypto.randomUUID(),
       $personaId: persona.id,
-      $datePicked: DateTime.now().setZone('Europe/Paris').toISO()
+      $pickedAt: DateTime.now().setZone('Europe/Paris').toISO()
     })
   }
 
   getMostRecent() {
     return this.db.query<Potd, SQLQueryBindings[]>(`
       SELECT * FROM Potd
-      ORDER BY datePicked DESC
+      ORDER BY pickedAt DESC
       LIMIT 1;
     `).get({})
   }
@@ -46,5 +48,31 @@ export default class PotdTable {
     return this.db.query<Potd, SQLQueryBindings[]>(`
       SELECT * FROM Potd;
     `).all()
+  }
+
+  get(id: string) {
+    return this.db.query<Potd, SQLQueryBindings>(`
+      SELECT * FROM Potd
+      WHERE id=$id;
+    `).get({
+      $id: id
+    })
+  }
+
+  update({ id, personaId }: Potd) {
+    this.db.query(`
+      UPDATE Potd
+      SET
+        personaId=$personaId,
+        modifiedAt=$modifiedAt
+      WHERE
+        id=$id;
+    `).run({
+      $id: id,
+      $personaId: personaId,
+      $modifiedAt: DateTime.now().setZone('Europe/Paris').toISO()
+    })
+
+    return this.get(id)
   }
 }

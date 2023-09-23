@@ -1,5 +1,5 @@
 import passport from "passport";
-import { Strategy } from "passport-discord-auth";
+import { Strategy, Scope } from "passport-discord-auth";
 import { db } from "../data/database";
 import { log } from "../../common/helpers/logger";
 
@@ -28,7 +28,7 @@ passport.use(new Strategy({
   clientId: DISCORD_CLIENT_ID,
   clientSecret: DISCORD_CLIENT_SECRET,
   callbackUrl: 'http://localhost:3004/api/auth/discord/redirect',
-  scope: ["email", "guilds"]
+  scope: [Scope.Email, Scope.Guilds]
 }, (accessToken, refreshToken, profile, done) => {
   const user = db.user.get(profile.id)
 
@@ -38,7 +38,6 @@ passport.use(new Strategy({
       return done(null, user)
     }
     else {
-      console.log(profile)
       const newUser = db.user.create({
         discordId: profile.id,
         username: profile.username,
@@ -46,7 +45,8 @@ passport.use(new Strategy({
         globalName: profile.global_name,
         email: profile.email,
         accessToken: accessToken,
-        refreshToken: refreshToken
+        refreshToken: refreshToken,
+        guilds: profile.guilds
       })
 
       if (!newUser) {
