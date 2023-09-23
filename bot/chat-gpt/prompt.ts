@@ -4,7 +4,7 @@ import { APTClient } from "../types";
 import { createContext, openai } from "./open-ai";
 
 import { db } from "../../api/data/database";
-import { log } from "../helpers/logger";
+import { log } from "../../common/helpers/logger";
 import { Persona } from "../../api/data/persona";
 
 export async function handlePrompt(client: APTClient, message: Message, persona: Persona) {

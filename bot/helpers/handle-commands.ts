@@ -1,7 +1,7 @@
 import { BaseInteraction } from "discord.js";
 import { APTClient } from "../types";
 
-import { log } from "./logger";
+import { log } from "../../common/helpers/logger";
 
 export async function handleCommand(interaction: BaseInteraction) {
   if (!interaction.isChatInputCommand()) return

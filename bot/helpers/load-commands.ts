@@ -1,7 +1,7 @@
 import { readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { BotCommand } from '../types'
-import { log } from './logger'
+import { log } from '../../common/helpers/logger'
 
 /**
  * @returns commands defined in the `commands` folder.

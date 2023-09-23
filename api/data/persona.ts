@@ -2,7 +2,7 @@ import Database, { SQLQueryBindings } from "bun:sqlite"
 import { parse } from 'yaml'
 
 export interface Persona {
-  id: number
+  id: string
   author: string
   title: string
   prompt: string
@@ -54,7 +54,7 @@ export default class PersonaTable {
     `).all()
   }
 
-  get(id: number) {
+  get(id: string) {
     return this.db.query<Persona, SQLQueryBindings>(`
       SELECT * FROM Persona
       WHERE id=$id;
@@ -63,18 +63,22 @@ export default class PersonaTable {
     })
   }
 
-  create(persona: Persona) {
-    return this.db.query(`
+  create({ author, title, prompt }: { author: string, title: string, prompt: string }) {
+    const id = crypto.randomUUID()
+
+    this.db.query(`
       INSERT INTO Persona(
         id, author, title, prompt
       )
       VALUES ($id, $author, $title, $prompt);
     `).run({
-      $id: persona.id,
-      $author: persona.author,
-      $title: persona.title,
-      $prompt: persona.prompt
+      $id: crypto.randomUUID(),
+      $author: author,
+      $title: title,
+      $prompt: prompt
     })
+
+    return this.get(id)
   }
 
   getOneRandomly() {
@@ -82,5 +86,33 @@ export default class PersonaTable {
     const index = Math.floor(Math.random() * personas.length)
 
     return personas[index]
+  }
+
+  delete(id: string) {
+    this.db.query(`
+      DELETE FROM Persona
+      WHERE id=$id
+    `).run({
+      $id: id
+    })
+  }
+
+  update(persona: Persona) {
+    this.db.query(`
+      UPDATE Persona
+      SET
+        author=$author,
+        title=$title,
+        prompt=$prompt,
+      WHERE
+        id=$id
+    `).run({
+      $id: persona.id,
+      $author: persona.author,
+      $title: persona.title,
+      $prompt: persona.prompt
+    })
+
+    return this.get(persona.id)
   }
 }

@@ -1,5 +1,5 @@
 import { db } from "../../api/data/database";
-import { log } from "./logger";
+import { log } from "../../common/helpers/logger";
 import isToday from "./is-today";
 import { DateTime } from "luxon";
 import { Persona } from "../../api/data/persona";
