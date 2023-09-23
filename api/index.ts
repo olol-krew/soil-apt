@@ -29,8 +29,9 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRouter)
 
 app.use((req, res, next) => {
-  if (req.ip === 'localhost' /*&& req.get('User-Agent') === 'SoilAPT-bot'*/) next()
+  if (req.ip === 'localhost' && req.get('User-Agent') === 'SoilAPT-bot') next()
   if (!req.user) return res.sendStatus(401)
+  if (!req.user.isGuildMember) return res.sendStatus(403)
   else next()
 })
 
