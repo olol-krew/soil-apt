@@ -1,7 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 
 import { BotCommand } from '../types'
-import { db } from "../../api/data/database";
 import { formatBigNumber, formatDollarAmount } from "../helpers/format-big-number";
 import fetchApi from "../helpers/fetch-api";
 import { UsageCount } from "../../api/data/prompt";
