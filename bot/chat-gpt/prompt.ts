@@ -44,6 +44,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
       model: 'gpt-3.5-turbo',
     })
 
+    // TODO: Storing the prompt in the DB should be handled by the API. To refactor.
     const promptParams = {
       userId: message.author.id,
       isResponse: message.reference !== null,
