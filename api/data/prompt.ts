@@ -1,6 +1,5 @@
 import Database, { SQLQueryBindings } from "bun:sqlite"
-import { Message } from "discord.js"
-import { ChatCompletion } from "openai/resources/chat/index.mjs"
+import { DateTime } from "luxon"
 
 export interface Prompt {
   id: string
@@ -39,7 +38,7 @@ export default class PromptTable {
       "responseTo" text,
       "inputToken" integer NOT NULL,
       "outputToken" integer NOT NULL,
-      "createdAt" text,
+      "createdAt" text NOT NULL,
       input text NOT NULL,
       output text NOT NULL
     );`)
@@ -60,24 +59,31 @@ export default class PromptTable {
     return this.db.query<Prompt, SQLQueryBindings[]>(query).all()
   }
 
-  async create(message: Message, chatResponse: ChatCompletion) {
-    const responseTo = message.reference && await message.fetchReference()
+  async create(
+    userId: string,
+    isResponse: boolean,
+    responseTo: string | null,
+    inputToken: number,
+    outputToken: number,
+    input: string,
+    output: string
+  ) {
     const promptParams = {
       $id: crypto.randomUUID(),
-      $userId: message.author.id,
-      $isResponse: message.reference !== null,
-      $responseTo: responseTo && responseTo.content,
-      $inputToken: chatResponse.usage?.prompt_tokens || null,
-      $outputToken: chatResponse.usage?.completion_tokens || null,
-      $createdAt: new Date().toISOString(),
-      $input: message.content,
-      $output: chatResponse.choices[0].message.content
+      $userId: userId,
+      $isResponse: isResponse,
+      $responseTo: responseTo,
+      $inputToken: inputToken,
+      $outputToken: outputToken,
+      $createdAt: DateTime.now().setZone('Europe/Paris').toISO(),
+      $input: input,
+      $output: output,
     }
 
-    this.db.query<Prompt, SQLQueryBindings>(`
+    this.db.query(`
       INSERT INTO Prompt (id, userId, isResponse, responseTo, inputToken, outputToken, createdAt, input, output)
       VALUES ($id, $userId, $isResponse, $responseTo, $inputToken, $outputToken, $createdAt, $input, $output);
-    `).get(promptParams)
+    `).run(promptParams)
 
     return this.get(promptParams.$id)
   }

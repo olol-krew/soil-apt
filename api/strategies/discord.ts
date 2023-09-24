@@ -12,7 +12,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser((id, done) => {
   try {
-    const user = db.user.get(id as string)
+    const user = db.authUser.get(id as string)
     if (!user) {
       throw new Error(`User with id ${id} not found.`)
     }
@@ -30,7 +30,7 @@ passport.use(new Strategy({
   callbackUrl: 'http://localhost:3004/api/auth/discord/redirect',
   scope: [Scope.Email, Scope.Guilds]
 }, (accessToken, refreshToken, profile, done) => {
-  const user = db.user.get(profile.id)
+  const user = db.authUser.get(profile.id)
 
   try {
     if (user) {
@@ -38,7 +38,7 @@ passport.use(new Strategy({
       return done(null, user)
     }
     else {
-      const newUser = db.user.create({
+      const newUser = db.authUser.create({
         discordId: profile.id,
         username: profile.username,
         avatar: profile.avatar,

@@ -55,13 +55,13 @@ export interface DiscordUser {
   }[]
 }
 
-export default class UserTable {
+export default class AuthUserTable {
   db: Database
 
   constructor(db: Database) {
     this.db = db
     // this.db.run(`DROP TABLE IF EXISTS User;`)
-    this.db.run(`CREATE TABLE IF NOT EXISTS User(
+    this.db.run(`CREATE TABLE IF NOT EXISTS AuthUser(
       id text PRIMARY KEY NOT NULL UNIQUE,
       discordId text NOT NULL,
       username text NOT NULL,
@@ -89,7 +89,7 @@ export default class UserTable {
     const id = crypto.randomUUID()
 
     this.db.query<APTUser, SQLQueryBindings>(`
-      INSERT INTO User (
+      INSERT INTO AuthUser (
         id,
         discordId,
         username,
@@ -131,13 +131,13 @@ export default class UserTable {
 
   getAll() {
     return this.db.query<APTUser, SQLQueryBindings[]>(`
-      SELECT * FROM User;
+      SELECT * FROM AuthUser;
     `).all()
   }
 
   get(id: string) {
     return this.db.query<APTUser, SQLQueryBindings>(`
-      SELECT * FROM User WHERE id=$id;
+      SELECT * FROM AuthUser WHERE id=$id;
     `).get({
       $id: id
     })
@@ -154,7 +154,7 @@ export default class UserTable {
     refreshToken
   }: APTUser) {
     this.db.query(`
-      UPDATE User
+      UPDATE AuthUser
       SET 
         discordId=$discordId,
         username=$username,
@@ -183,7 +183,7 @@ export default class UserTable {
 
   delete(id: string) {
     return this.db.query(`
-      DELETE FROM User
+      DELETE FROM AuthUser
       WHERE id=$id
     `).get({
       $id: id

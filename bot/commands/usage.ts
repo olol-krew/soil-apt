@@ -3,6 +3,8 @@ import { SlashCommandBuilder } from "discord.js";
 import { BotCommand } from '../types'
 import { db } from "../../api/data/database";
 import { formatBigNumber, formatDollarAmount } from "../helpers/format-big-number";
+import fetchApi from "../helpers/fetch-api";
+import { UsageCount } from "../../api/data/prompt";
 
 const INPUT_TOKEN_PRICE_PER_THOUSAND = 0.0015;
 const OUTPUT_TOKEN_PRICE_PER_THOUSAND = 0.002;
@@ -13,7 +15,12 @@ const usageCommand: BotCommand = {
     .setName('usage')
     .setDescription('Returns API usage stats.'),
   async execute(interaction) {
-    const usageCounts = db.prompt.countUsageTokens()
+    const usageCounts = await fetchApi<UsageCount>('/api/prompts/token-usage')
+
+    if (!usageCounts) {
+      await interaction.reply('Désolé il y a eu un soucis avec cette requête.')
+      return
+    }
 
     if (
       null === usageCounts ||
