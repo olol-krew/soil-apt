@@ -10,6 +10,10 @@ export function pickNewPotd() {
   return db.potd.getMostRecent()
 }
 
+export function forcePotdChange(persona: Persona) {
+  db.potd.create(persona);
+}
+
 export interface PotdLoadingOptions {
   forceReload?: boolean
 }
