@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     branches: [main]
+    paths: [api/**]
   workflow_dispatch:
 
 jobs:
@@ -19,10 +20,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt stop
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api stop
             cd soil-apt
             git checkout main
             git pull
             /home/kaboum/.bun/bin/bun install
-            /home/kaboum/.bun/bin/bun src/helpers/deploy-commands.ts
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt start
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api start

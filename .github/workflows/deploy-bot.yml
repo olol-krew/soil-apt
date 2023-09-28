@@ -19,10 +19,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt stop
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot stop
             cd soil-apt
             git checkout main
             git pull
             /home/kaboum/.bun/bin/bun install
-            /home/kaboum/.bun/bin/bun src/helpers/deploy-commands.ts
-            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt start
+            /home/kaboum/.bun/bin/bun bot/helpers/deploy-commands.ts
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot start
