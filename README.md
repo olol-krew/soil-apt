@@ -39,10 +39,10 @@ Deploy the commands on you dev server (only the first time and each time you cre
 
 - [Get your dev server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-#:~:text=Obtaining%20Server%20IDs%20%2D%20Mobile%20App,name%20and%20select%20Copy%20ID.)
 - Add it as `DISCORD_GUILD_ID` in your environment or `.env` file
-- run the deployment script
+- run the command deployment script. :warning: The API should be online as the bot needs the list of personas available.
 
 ```
-bun bot/helpers/deploy-commands.ts
+bun bot:deploy
 ```
 
 Start the bot in watch mode
