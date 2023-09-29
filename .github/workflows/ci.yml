@@ -16,6 +16,8 @@ jobs:
       - name: install
         run: bun install
       - name: lint API
+        if: always()
         run: bun api:lint
       - name: lint bot
+        if: always()
         run: bun bot:lint
