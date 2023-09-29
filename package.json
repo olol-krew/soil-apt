@@ -14,6 +14,7 @@
     "@types/yargs-parser": "^21.0.0"
   },
   "scripts": {
+    "bot:deploy": "bun bot/helpers/deploy-commands.ts",
     "bot:dev": "bun --watch bot/index.ts",
     "bot:prod": "bun bot/index.ts",
     "bot:lint": "eslint ./bot",
