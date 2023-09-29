@@ -30,7 +30,7 @@ jobs:
             cd soil-apt
             git checkout main
             git pull 
-            /home/kaboum/.bun/bin/bun install
+            bun install
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api start
-            /home/kaboum/.bun/bin/bun bot:deploy
+            bun bot:deploy
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot start
