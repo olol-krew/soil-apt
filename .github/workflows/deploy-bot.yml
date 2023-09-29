@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     branches: [main]
+    paths: [bot/**]
   workflow_dispatch:
 
 jobs:
