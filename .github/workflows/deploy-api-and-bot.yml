@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-api:
+  deploy-api-and-bot:
     runs-on: ubuntu-latest
     environment: production
 
@@ -30,7 +30,7 @@ jobs:
             cd soil-apt
             git checkout main
             git pull 
-            bun install
+            /home/kaboum/.bun/bin/bun install
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api start
-            bun bot:deploy
+            /home/kaboum/.bun/bin/bun bot/helpers/deploy-commands.ts
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot start
