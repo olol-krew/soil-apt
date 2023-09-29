@@ -7,11 +7,11 @@ import PromptUserTable from './prompt-user'
 
 class SoilAptDb {
   db: Database
+  persona: PersonaTable
   prompt: PromptTable
   authUser: AuthUserTable
-  persona: PersonaTable
-  potd: PotdTable
   promptUser: PromptUserTable
+  potd: PotdTable
 
   constructor() {
     this.db = new Database("soilaptdb.db")

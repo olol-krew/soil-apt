@@ -24,15 +24,18 @@ export default class PotdTable {
     `).run()
   }
 
-  create(persona: Persona) {
-    return this.db.query(`
+  create(personaId: string) {
+    const id = crypto.randomUUID()
+    this.db.query(`
       INSERT INTO Potd (id, personaId, pickedAt)
       VALUES ($id, $personaId, $pickedAt);
     `).run({
-      $id: crypto.randomUUID(),
-      $personaId: persona.id,
+      $id: id,
+      $personaId: personaId,
       $pickedAt: DateTime.now().setZone('Europe/Paris').toISO()
     })
+
+    return this.get(id)
   }
 
   getMostRecent() {

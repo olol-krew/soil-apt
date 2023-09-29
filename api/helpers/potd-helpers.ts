@@ -6,7 +6,7 @@ import { Persona } from "../data/persona";
 
 export function pickNewPotd() {
   const newPersona = db.persona.getOneRandomly()
-  db.potd.create(newPersona)
+  db.potd.create(newPersona.id)
   return db.potd.getMostRecent()
 }
 

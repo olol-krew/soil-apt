@@ -17,7 +17,13 @@ potdRouter.get('/', (req, res) => {
   return res.json(potd)
 })
 
-// potdRouter.get('/:id', (req, res) => { })
+potdRouter.post('/', (req, res) => {
+  const { personaId } = req.body
+  if (!personaId) return res.sendStatus(400)
+  const newPotd = db.potd.create(personaId)
+  if (!newPotd) return res.sendStatus(500)
+  return res.json(db.persona.get(newPotd.personaId))
+})
 
 potdRouter.put('/:id', (req, res) => {
   const { personaId } = req.body

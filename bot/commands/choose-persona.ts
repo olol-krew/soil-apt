@@ -1,39 +1,43 @@
 import { APIApplicationCommandOptionChoice, SlashCommandBuilder } from "discord.js"
 
 import { BotCommand } from '../types'
-import { Persona } from "../data/persona"
-import { db } from "../data/database"
-import { forcePotdChange } from "../helpers/potd-helpers"
+import fetchApi from "../helpers/fetch-api";
+import { Persona } from "../../api/data/persona";
 
-if (0 === db.persona.getCount()) {
-    await db.persona.load()
+const personas = await fetchApi<Persona[]>('/api/personas/')
+if (!personas) {
+  throw new Error('No personas returned! Is the API online?')
 }
-const personasChoices = db.persona.getAll().map((persona: Persona): APIApplicationCommandOptionChoice<number> => ({name: persona.title, value: +persona.id }));
+
+const personasChoices = personas.map((persona: Persona): APIApplicationCommandOptionChoice<string> => ({ name: persona.title, value: persona.id }));
 
 const choosePersonaCommand: BotCommand = {
   data: new SlashCommandBuilder()
     .setName('choose-persona')
     .setDescription('Change which persona the bot will use')
-    .addIntegerOption(option =>
+    .addStringOption(option =>
       option.setName('persona')
         .setDescription('The persona you want the bot to use')
         .setRequired(true)
         .addChoices(...personasChoices)
     ),
   async execute(interaction) {
-    const selectedPersonaId = interaction.options.getInteger('persona');
+    const selectedPersonaId = interaction.options.getString('persona');
 
     if (null === selectedPersonaId) {
       return;
     }
 
-    const selectedPersona = db.persona.get(selectedPersonaId);
+    const selectedPersona = await fetchApi<Persona>('api/potd', {
+      method: 'POST',
+      body: JSON.stringify({
+        personaId: selectedPersonaId
+      })
+    })
 
-    if (null === selectedPersona) {
-        return;
+    if (undefined === selectedPersona) {
+      return;
     }
-
-    forcePotdChange(selectedPersona);
 
     interaction.reply(`Je serai désormais ${selectedPersona.title} !`);
   }
