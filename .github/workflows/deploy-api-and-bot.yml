@@ -1,21 +1,23 @@
-name: CD
+name: Deploy API and BOT
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
     paths:
       - api/**
+      - bot/**
       - common/**
       - package.json
   workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-api:
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-      - name: execute deploy script via ssh
+      - name: Deploy using SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -24,8 +26,11 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api stop
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot stop
             cd soil-apt
             git checkout main
-            git pull
+            git pull 
             /home/kaboum/.bun/bin/bun install
             echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-api start
+            /home/kaboum/.bun/bin/bun bot:deploy
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot start
