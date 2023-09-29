@@ -23,31 +23,34 @@ cp .env.dist .env
 
 ## Dev
 
-- Deploy the commands on you dev server (only the first time and each time you create a new command):
-  - [Get your dev server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-#:~:text=Obtaining%20Server%20IDs%20%2D%20Mobile%20App,name%20and%20select%20Copy%20ID.)
-  - Add it as `DISCORD_GUILD_ID` in your environment or `.env` file
-  - run the deployment script
-  ```
-  bun src/helpers/deploy-commands.ts
-  ```
-- Start the bot in watch mode
+### API
 
-  ```
-  bun dev
-  ```
-
-- To force the use of a specific persona, first get its ID from the list of personas in `src/data/personas.yml`, then pass it with the `--force-persona <ID>` flag
-
-  Example
-
-  ```
-  bun dev --force-persona 3
-  ```
-
-## Prod
-
-- No need to transpile with Bun
+To start the API, use the following command
 
 ```
-bun src/index.ts
+bun api:dev
 ```
+
+This will start the server on `localhost:API_PORT` (by default, port 3001)
+
+### Bot
+
+Deploy the commands on you dev server (only the first time and each time you create a new command):
+
+- [Get your dev server ID](https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID-#:~:text=Obtaining%20Server%20IDs%20%2D%20Mobile%20App,name%20and%20select%20Copy%20ID.)
+- Add it as `DISCORD_GUILD_ID` in your environment or `.env` file
+- run the deployment script
+
+```
+bun bot/helpers/deploy-commands.ts
+```
+
+Start the bot in watch mode
+
+```
+bun bot:dev
+```
+
+### Frontend
+
+/TBD

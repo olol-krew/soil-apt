@@ -1,0 +1,28 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: execute deploy script via ssh
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot stop
+            cd soil-apt
+            git checkout main
+            git pull
+            /home/kaboum/.bun/bin/bun install
+            /home/kaboum/.bun/bin/bun bot/helpers/deploy-commands.ts
+            echo ${{ secrets.SSH_PASSWORD }} | sudo -S service soilapt-bot start

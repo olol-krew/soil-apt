@@ -169,6 +169,6 @@ dist
 .pnp.\*
 
 # db
-soilaptdb.db
+*.db
 *.log
 bun.lockb
