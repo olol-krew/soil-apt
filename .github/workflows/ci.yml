@@ -10,13 +10,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: oven-sh/setup-bun@v1
         with:
-          node-version: '18'
-          cache: 'npm'
+          bun-version: latest
       - name: install
-        run: npm install
+        run: bun install
       - name: lint API
-        run: npm run api:lint
+        run: bun api:lint
       - name: lint bot
-        run: npm run bot:lint
+        run: bun bot:lint
