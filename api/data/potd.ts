@@ -1,5 +1,4 @@
 import Database, { SQLQueryBindings } from "bun:sqlite";
-import { Persona } from "./persona";
 import { DateTime } from "luxon";
 
 export interface Potd {
