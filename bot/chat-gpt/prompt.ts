@@ -41,7 +41,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
         }
       ],
       temperature: 0.7,
-      model: 'gpt-4',
+      model: 'gpt-4-1106-preview',
     })
 
     const promptParams = {
