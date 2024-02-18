@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRouter)
 
 app.use((req, res, next) => {
-  if (req.get('Authorization') === `Basic ${btoa(Bun.env.SESSION_SECRET!)}` && req.get('User-Agent') === 'SoilAPT-bot') return next()
+  if (req.get('Authorization') === `Basic ${btoa(Bun.env.BOT_TOKEN!)}` && req.get('User-Agent') === 'SoilAPT-bot') return next()
   if (!req.user) return res.sendStatus(401)
   if (!req.user.isGuildMember) return res.sendStatus(403)
   else next()

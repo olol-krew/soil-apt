@@ -12,7 +12,7 @@ export default async function fetchApi<T>(endpoint: string, opts: FetchApiOption
       headers: {
         'User-Agent': 'SoilAPT-bot',
         'Content-Type': 'application/json',
-        'Authorization': `Basic ${btoa(Bun.env.SESSION_SECRET!)}`
+        'Authorization': `Basic ${btoa(Bun.env.BOT_TOKEN!)}`
       },
       method: opts.method,
       body: opts.body && opts.body
