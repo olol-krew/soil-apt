@@ -9,10 +9,10 @@ const moodCommand: BotCommand = {
     .setName('persona')
     .setDescription('Get persona of the day'),
   async execute(interaction) {
-    const persona = await fetchApi<Persona>('/api/personas/today')
+    const persona = await fetchApi<Persona>('/api/personas/current')
     if (!persona) return
 
-    await interaction.reply(`Ma personnalité du jour est ${persona.title} (ajouté par ${persona.author}).`)
+    await interaction.reply(`Ma personnalité du moment est ${persona.title} (ajouté par ${persona.author}).`)
   }
 }
 

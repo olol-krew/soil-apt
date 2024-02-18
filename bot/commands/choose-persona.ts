@@ -9,37 +9,32 @@ if (!personas) {
   throw new Error('No personas returned! Is the API online?')
 }
 
-const personasChoices = personas.map((persona: Persona): APIApplicationCommandOptionChoice<string> => ({ name: persona.title, value: persona.id }));
+const personasChoices = personas.map((persona: Persona): APIApplicationCommandOptionChoice<number> => ({ name: persona.title, value: +persona.id }));
 
 const choosePersonaCommand: BotCommand = {
   data: new SlashCommandBuilder()
     .setName('choose-persona')
     .setDescription('Change which persona the bot will use')
-    .addStringOption(option =>
+    .addNumberOption(option =>
       option.setName('persona')
         .setDescription('The persona you want the bot to use')
         .setRequired(true)
         .addChoices(...personasChoices)
     ),
   async execute(interaction) {
-    const selectedPersonaId = interaction.options.getString('persona');
+    const selectedPersonaId = interaction.options.getNumber('persona');
 
     if (null === selectedPersonaId) {
       return;
     }
 
-    const selectedPersona = await fetchApi<Persona>('api/potd', {
+    await fetchApi<Persona>(`api/personas/change/${selectedPersonaId}`, {
       method: 'POST',
-      body: JSON.stringify({
-        personaId: selectedPersonaId
-      })
     })
+    const persona = await fetchApi<Persona>('/api/personas/current')
+    if (!persona) return
 
-    if (undefined === selectedPersona) {
-      return;
-    }
-
-    interaction.reply(`Je serai désormais ${selectedPersona.title} !`);
+    await interaction.reply(`Ok, ma personnalité est maintenant ${persona.title} (ajouté par ${persona.author}).`)
   }
 }
 
