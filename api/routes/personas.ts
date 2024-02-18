@@ -1,34 +1,38 @@
 import { Router } from 'express'
 import { db } from '../data/database'
+import { DateTime } from 'luxon'
 
 const personaRouter = Router()
+
+personaRouter.get('/current', (req, res) => {
+  let currentId: number | undefined = undefined
+  const current = db.currentPersona.getCurrent()
+
+  if (current === null || DateTime.fromISO(current.changedAt) < DateTime.now().minus({ hours: 1 })) {
+    currentId = Bun.env.DEFAULT_PERSONA ? +Bun.env.DEFAULT_PERSONA : 1
+  } else currentId = current.personaId
+
+  const persona = db.persona.get(currentId)
+
+  return persona ? res.json(persona) : res.sendStatus(404)
+})
 
 personaRouter.get('/', (req, res) => {
   const personas = db.persona.getAll()
   res.json(personas)
 })
 
-personaRouter.get('/today', (req, res) => {
-  const potd = db.potd.getMostRecent()
-  if (!potd) return res.sendStatus(500)
-  const persona = db.persona.get(potd.personaId)
-  if (!persona) return res.sendStatus(500)
-  return res.json(persona)
-})
-
 personaRouter.get('/:id', (req, res) => {
   const { id } = req.params
-  const persona = db.persona.get(id)
+  const persona = db.persona.get(+id)
   return res.json(persona)
 })
 
 personaRouter.post('/', (req, res) => {
   const { author, title, prompt } = req.body
-  const persona = db.persona.create({ author, title, prompt })
-  if (!persona) return res.sendStatus(500)
-  return res.status(201).json(persona)
+  db.persona.create({ author, title, prompt })
+  return res.status(201)
 })
-
 
 personaRouter.delete('/:id', (req, res) => {
   const { id } = req.params
@@ -39,11 +43,17 @@ personaRouter.delete('/:id', (req, res) => {
 personaRouter.put('/:id', (req, res) => {
   const { id } = req.params
   const { author, title, prompt } = req.body
-  const oldUser = db.persona.get(id)
+  const oldUser = db.persona.get(+id)
   if (!oldUser) return res.sendStatus(404)
-  const update = db.persona.update({ id, author, title, prompt })
-  if (!update) return res.sendStatus(500)
-  return res.json(update)
+  db.persona.update({ id: +id, author, title, prompt })
+  return res.sendStatus(201)
+})
+
+personaRouter.post('/change/:id', (req, res) => {
+  const { id } = req.params
+  const currentPersona = db.currentPersona.create(+id)
+  if (!currentPersona) return res.sendStatus(500)
+  return res.sendStatus(201)
 })
 
 export default personaRouter
