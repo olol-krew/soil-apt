@@ -4,13 +4,14 @@ import { FileSink } from 'bun'
 import chalk, { ChalkInstance } from 'chalk'
 
 export interface LoggerOptions {
-  level?: "debug" | "info" | "warn" | "error" | undefined
+  level?: "debug" | "success" | "info" | "warn" | "error" | undefined
   logFile?: string | undefined
 }
 
-type LogLevel = "debug" | "info" | "warn" | "error"
+type LogLevel = "debug" | "success" | "info" | "warn" | "error"
 
 const INFO_COLOR = chalk.blue
+const SUCCESS_COLOR = chalk.green
 const WARN_COLOR = chalk.yellow
 const ERROR_COLOR = chalk.red
 const DEBUG_COLOR = chalk.cyan
@@ -23,6 +24,7 @@ class Logger {
   constructor(options?: LoggerOptions) {
     this.#level = [
       "debug",
+      "success",
       "info",
       "warn",
       "error"
@@ -42,6 +44,10 @@ class Logger {
     this.#log('info', INFO_COLOR, ...args)
   }
 
+  success(...args: any[]) {
+    this.#log('success', SUCCESS_COLOR, ...args)
+  }
+
   warn(...args: any[]) {
     this.#log('warn', WARN_COLOR, ...args)
   }
@@ -54,7 +60,7 @@ class Logger {
     this.#log('debug', DEBUG_COLOR, ...args)
   }
 
-  #log(level: "debug" | "info" | "warn" | "error", color: ChalkInstance, ...content: any[]) {
+  #log(level: "debug" | "success" | "info" | "warn" | "error", color: ChalkInstance, ...content: any[]) {
     if (!this.#level.includes(level)) return
 
     if (this.#writer !== undefined) {
@@ -69,7 +75,7 @@ class Logger {
     return (includeDate ? this.#getDateString(time) + ' ' : '') + this.#getTimeString(time)
   }
 
-  #getLogString(logOptions: { level: "debug" | "info" | "warn" | "error", color?: ChalkInstance }, ...content: any[]) {
+  #getLogString(logOptions: { level: "debug" | "success" | "info" | "warn" | "error", color?: ChalkInstance }, ...content: any[]) {
     return logOptions.color
       ? `${this.#getTimeStamp()} ${logOptions.color(logOptions.level.toUpperCase())} - ${content.map((c) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
       : `${this.#getTimeStamp()} ${logOptions.level.toUpperCase()} - ${content.map((c) => typeof c === 'object' ? JSON.stringify(c) : c).join(' ')}`
