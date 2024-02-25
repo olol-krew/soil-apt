@@ -1,0 +1,18 @@
+services:
+  api:
+    container_name: api
+    image: soilapt-api:latest
+    volumes:
+      - /path/to/some/folder:/usr/src/app/db
+    ports:
+      - 3001:3001
+    env_file:
+      - path: .env
+
+  bot:
+    container_name: bot
+    depends_on:
+      - api
+    image: soilapt-bot:latest
+    env_file:
+      - path: .env
