@@ -1,7 +1,7 @@
 services:
   api:
     container_name: api
-    image: soilapt-api:latest
+    image: drkabum/soilapt-api:latest
     volumes:
       - /path/to/some/folder:/usr/src/app/db
     ports:
@@ -13,6 +13,6 @@ services:
     container_name: bot
     depends_on:
       - api
-    image: soilapt-bot:latest
+    image: drkabum/soilapt-bot:latest
     env_file:
       - path: .env
