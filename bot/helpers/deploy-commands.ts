@@ -1,7 +1,7 @@
 import { loadCommands } from './load-commands'
 import { REST, Routes } from 'discord.js'
 
-import { log } from '../../common/helpers/logger'
+import { log } from "kabum-ts-logger"
 
 async function deployCommands() {
   const {

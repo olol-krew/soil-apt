@@ -10,7 +10,7 @@ class SoilAptDb {
   currentPersona: CurrentPersonaTable
 
   constructor() {
-    this.db = new Database("soilaptdb.db")
+    this.db = new Database("./files/soilaptdb.db")
     this.authUser = new AuthUserTable(this.db)
     this.persona = new PersonaTable(this.db)
     this.currentPersona = new CurrentPersonaTable(this.db)

@@ -1,8 +1,8 @@
 import { SlashCommandBuilder } from "discord.js"
 
-import { BotCommand } from '../types'
+import type { BotCommand } from '../types'
 import fetchApi from "../helpers/fetch-api"
-import { Persona } from "../../api/data/persona"
+import type { Persona } from "../../api/data/persona"
 
 const moodCommand: BotCommand = {
   data: new SlashCommandBuilder()

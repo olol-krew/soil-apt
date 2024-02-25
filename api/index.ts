@@ -3,7 +3,7 @@ import session from "express-session"
 import passport from "passport"
 import "./strategies/discord"
 
-import { log } from "../common/helpers/logger"
+import { log } from "kabum-ts-logger"
 
 import authRouter from "./routes/auth"
 import personaRouter from "./routes/personas"
