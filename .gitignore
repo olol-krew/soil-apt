@@ -169,5 +169,5 @@ dist
 .pnp.\*
 
 # db
-*.db
+*.sqlite
 *.log
