@@ -169,5 +169,6 @@ dist
 .pnp.\*
 
 # db
-*.db
+*.sqlite
 *.log
+compose.yaml

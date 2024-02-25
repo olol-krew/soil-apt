@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { db } from '../data/database'
+import { db } from '../database/database'
 import { DateTime } from 'luxon'
 
 const personaRouter = Router()
