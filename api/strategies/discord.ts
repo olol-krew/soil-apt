@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy, Scope } from "passport-discord-auth";
-import { db } from "../data/database";
+import { db } from "../database/database";
 import { log } from "kabum-ts-logger"
 
 const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } = Bun.env

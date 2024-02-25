@@ -1,5 +1,5 @@
 import Database, { type SQLQueryBindings } from "bun:sqlite"
-import data from "../files/personas.toml"
+import data from "../data/personas.toml"
 import { log } from "kabum-ts-logger"
 export interface Persona {
   id: number
