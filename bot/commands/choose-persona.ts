@@ -1,10 +1,23 @@
-import { APIApplicationCommandOptionChoice, SlashCommandBuilder } from "discord.js"
+import { type APIApplicationCommandOptionChoice, SlashCommandBuilder } from "discord.js"
 
-import { BotCommand } from '../types'
+import type { BotCommand } from '../types';
 import fetchApi from "../helpers/fetch-api";
-import { Persona } from "../../api/data/persona";
+import type { Persona } from "../../api/data/persona";
+import { log } from "kabum-ts-logger";
 
-const personas = await fetchApi<Persona[]>('/api/personas/')
+let retries = 3
+let personas: Persona[] | undefined = undefined
+
+do {
+  personas = await fetchApi<Persona[]>('/api/personas/')
+  if (personas !== undefined) break
+  retries--
+  if (retries > 0) {
+    log.warn(`No persona returned. Retrying (${retries})`)
+    await Bun.sleep(1500)
+  }
+} while (retries > 0)
+
 if (!personas) {
   throw new Error('No personas returned! Is the API online?')
 }

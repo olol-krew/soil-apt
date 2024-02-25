@@ -1,4 +1,4 @@
-import Database, { SQLQueryBindings } from "bun:sqlite";
+import Database, { type SQLQueryBindings } from "bun:sqlite";
 
 export interface CurrentPersona {
   id: string

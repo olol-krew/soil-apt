@@ -1,7 +1,7 @@
 import OpenAI from "openai"
 import { Message } from 'discord.js'
-import { APTClient } from "../types"
-import { Persona } from "../../api/data/persona"
+import type { APTClient } from "../types"
+import type { Persona } from "../../api/data/persona"
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY

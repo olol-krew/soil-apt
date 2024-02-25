@@ -1,7 +1,6 @@
-import Database, { SQLQueryBindings } from "bun:sqlite"
-import data from "./personas.toml"
-import { log } from "../../common/helpers/logger"
-
+import Database, { type SQLQueryBindings } from "bun:sqlite"
+import data from "../files/personas.toml"
+import { log } from "kabum-ts-logger"
 export interface Persona {
   id: number
   author: string

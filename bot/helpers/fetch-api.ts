@@ -1,4 +1,4 @@
-import { log } from "../../common/helpers/logger"
+import { log } from "kabum-ts-logger"
 
 interface FetchApiOptions {
   method: "GET" | "POST" | "DELETE" | "PUT"
@@ -8,7 +8,7 @@ interface FetchApiOptions {
 export default async function fetchApi<T>(endpoint: string, opts: FetchApiOptions = { method: 'GET' }): Promise<T | undefined> {
   log.info(`${opts.method} ${endpoint}`)
   try {
-    const req = await fetch(`http://${Bun.env.API_HOST}:${Bun.env.API_PORT}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`, {
+    const req = await fetch(`http://${Bun.env.API_HOST}:${Bun.env.API_PORT || 3001}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`, {
       headers: {
         'User-Agent': 'SoilAPT-bot',
         'Content-Type': 'application/json',

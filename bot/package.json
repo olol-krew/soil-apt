@@ -1,0 +1,27 @@
+{
+  "name": "soilapt-bot",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "bot:deploy": "bun bot/helpers/deploy-commands.ts",
+    "bot:dev": "bun --watch bot/index.ts",
+    "bot:prod": "bun bot/index.ts",
+    "bot:build": "docker build --pull -t soilapt-bot .",
+    "bot:lint": "eslint ./bot",
+    "bot:lint-fix": "eslint --fix ./bot"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.49.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "kabum-ts-logger": "^1.1.1",
+    "openai": "^4.6.0"
+  }
+}

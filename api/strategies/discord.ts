@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy, Scope } from "passport-discord-auth";
 import { db } from "../data/database";
-import { log } from "../../common/helpers/logger";
+import { log } from "kabum-ts-logger"
 
 const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } = Bun.env
 if (!DISCORD_CLIENT_ID || !DISCORD_CLIENT_SECRET) throw new Error('OAuth credentials missing.')

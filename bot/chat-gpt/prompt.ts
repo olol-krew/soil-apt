@@ -1,9 +1,9 @@
 import { Message } from "discord.js";
 
-import { APTClient } from "../types";
+import type { APTClient } from "../types";
 import { createContext, openai } from "./open-ai";
-import { log } from "../../common/helpers/logger";
-import { Persona } from "../../api/data/persona";
+import { log } from 'kabum-ts-logger'
+import type { Persona } from "../../api/data/persona";
 import fetchApi from "../helpers/fetch-api";
 
 export async function handlePrompt(client: APTClient, message: Message) {

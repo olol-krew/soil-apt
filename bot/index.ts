@@ -1,10 +1,11 @@
 import { Client, Events, GatewayIntentBits, Message, Collection } from 'discord.js'
+import { log } from 'kabum-ts-logger'
 
-import { APTClient } from './types'
+import type { APTClient } from './types'
 import { loadCommands } from './helpers/load-commands'
 import { handlePrompt } from './chat-gpt/prompt'
 import { handleCommand } from './helpers/handle-commands'
-import { log } from '../common/helpers/logger'
+
 
 const { DISCORD_TOKEN } = process.env
 
