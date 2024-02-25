@@ -171,3 +171,4 @@ dist
 # db
 *.sqlite
 *.log
+compose.yaml
