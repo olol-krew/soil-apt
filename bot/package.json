@@ -7,8 +7,8 @@
     "bot:dev": "bun --watch bot/index.ts",
     "bot:prod": "bun bot/index.ts",
     "bot:build": "docker build --pull -t soilapt-bot .",
-    "bot:lint": "eslint ./bot",
-    "bot:lint-fix": "eslint --fix ./bot"
+    "bot:lint": "eslint .",
+    "bot:lint-fix": "eslint --fix ."
   },
   "devDependencies": {
     "@types/bun": "latest",
