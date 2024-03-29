@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
 bun run bot:deploy
-bun index.ts
+bun run bot:prod
