@@ -27,8 +27,9 @@ COPY --from=prerelease /usr/src/app/commands/. commands/.
 COPY --from=prerelease /usr/src/app/chat-gpt/. chat-gpt/.
 COPY --from=prerelease /usr/src/app/helpers/. helpers/.
 COPY --from=prerelease /usr/src/app/package.json .
+COPY --from=prerelease /usr/src/app/container-entrypoint.sh .
 
 # run the app
 USER bun
 EXPOSE 3001/tcp
-ENTRYPOINT [ "bun", "run", "index.ts" ]
+ENTRYPOINT [ "./container-entrypoint.sh" ]
