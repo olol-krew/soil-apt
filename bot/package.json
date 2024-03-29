@@ -3,9 +3,9 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "bot:deploy": "bun bot/helpers/deploy-commands.ts",
-    "bot:dev": "bun --watch bot/index.ts",
-    "bot:prod": "bun bot/index.ts",
+    "bot:deploy": "bun helpers/deploy-commands.ts",
+    "bot:dev": "bun --watch index.ts",
+    "bot:prod": "bun index.ts",
     "bot:build": "docker build --pull -t soilapt-bot .",
     "bot:lint": "eslint .",
     "bot:lint-fix": "eslint --fix ."
