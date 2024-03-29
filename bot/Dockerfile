@@ -32,4 +32,4 @@ COPY --from=prerelease /usr/src/app/container-entrypoint.sh .
 # run the app
 USER bun
 EXPOSE 3001/tcp
-ENTRYPOINT [ "./container-entrypoint.sh" ]
+ENTRYPOINT [ "sh", "container-entrypoint.sh" ]
