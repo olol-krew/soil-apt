@@ -26,7 +26,7 @@ cp .env.dist .env
 ```
 
 - edit it with your own keys and values
-- run with docker compose
+- run with [docker compose](https://docs.docker.com/reference/cli/docker/compose/up/)
 
 ```bash
 docker compose up
@@ -40,7 +40,7 @@ Edit the environment file as above with values from your development Discord ser
 
 To start the API, use the following command
 
-```
+```bash
 cd api && bun api:dev
 ```
 
@@ -60,7 +60,7 @@ cd bot && bun bot:deploy
 
 Start the bot in watch mode
 
-```
+```bash
 cd bot && bun bot:dev
 ```
 
