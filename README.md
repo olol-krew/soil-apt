@@ -41,7 +41,7 @@ Edit the environment file as above with values from your development Discord ser
 To start the API, use the following command
 
 ```
-bun api:dev
+cd api && bun api:dev
 ```
 
 This will start the server on `localhost:API_PORT` (by default, port 3001)
@@ -54,14 +54,14 @@ Deploy the commands on you dev server (only the first time and each time you cre
 - Add it as `DISCORD_GUILD_ID` in your environment or `.env` file
 - run the command deployment script. :warning: The API should be online as the bot needs the list of personas available.
 
-```
-bun bot:deploy
+```bash 
+cd bot && bun bot:deploy
 ```
 
 Start the bot in watch mode
 
 ```
-bun bot:dev
+cd bot && bun bot:dev
 ```
 
 ### Frontend
