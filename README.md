@@ -1,10 +1,11 @@
 # SoilAPT
 
-SoilAPT is a Discord bot made for friends. It uses ChatGPT and has basically 2 functions:
+SoilAPT is a Discord bot made for friends and intended to be used on our Discord server. But if you're interested, you can reuse it and self host it (pretty easy using Docker, too). It uses ChatGPT and has basically 2 functions:
 
 - Start a message with `@SoilAPT` to prompt something to ChatGPT as you normally would.
 - Create a response message starting with `@SoilAPT` from another message and prompt something about it as context. The bot will get all the responses of responses too, so you can have a conversation as in the web UI.
 - SoilAPT comes with a variety of personalities you can switch to using Discord slash commands (all for french language for now), and you can add more yourself by editing the [persona file](https://github.com/DrKabum/soil-apt/blob/main/api/data/personas.toml)
+
 ℹ️ The first persona of that list will be considered the default personality. When changing SoilAPT's personality, it will keep it until nobody prompted it for one hour. After that, it will go back to its default personnality.
 
 ## Pre-requirements
