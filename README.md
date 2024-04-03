@@ -4,7 +4,7 @@ SoilAPT is a Discord bot made for friends. It uses ChatGPT and has basically 2 f
 
 - Start a message with `@SoilAPT` to prompt something to ChatGPT as you normally would.
 - Create a response message starting with `@SoilAPT` from another message and prompt something about it as context. The bot will get all the responses of responses too, so you can have a conversation as in the web UI.
-- SoilAPT has a personality disorder. Everyday at midnight, it will randomly pick from a list of personas made by my community of friends.
+- SoilAPT comes with a variety of personalities you can switch to (all for french language for now), and you can add more yourself by editing the [persona file](https://github.com/DrKabum/soil-apt/blob/main/api/data/personas.toml)
 
 ## Pre-requirements
 
@@ -13,15 +13,27 @@ SoilAPT is a Discord bot made for friends. It uses ChatGPT and has basically 2 f
 - Create an account and get an API key from [OpenAi](https://openai.com/blog/openai-api)
 
 ## Get started
+### Run with Docker
 
-- clone this repository
-- edit the .env file with your own keys
+- get the following files from this repository:
+    - `.env.dist`
+    - `docker-compose.yaml`
+- copy and rename the environment file
 
-```
+```bash
 cp .env.dist .env
 ```
 
+- edit it with your own keys and values
+- run with docker compose
+
+```bash
+docker compose up
+```
+
 ## Dev
+
+Edit the environment file as above with values from your development Discord server
 
 ### API
 
