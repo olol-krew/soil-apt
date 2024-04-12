@@ -25,7 +25,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
           content: message.content.replace(`<@${client.user?.id}> `, '')
         }
       ],
-      temperature: 0.7,
+      temperature: 1.5,
       model: 'gpt-4-1106-preview',
     })
 
