@@ -26,7 +26,7 @@ export async function handlePrompt(client: APTClient, message: Message) {
         }
       ],
       temperature: 1.5,
-      model: 'gpt-4-1106-preview',
+      model: 'gpt-4o',
     })
 
     log.info(`Response from OpenAI received. Input token: ${chatResponse.usage?.prompt_tokens}, output token: ${chatResponse.usage?.completion_tokens}. Replying...`)
