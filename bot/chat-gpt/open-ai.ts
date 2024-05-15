@@ -54,7 +54,8 @@ class OpenAi {
     ]
 
     if (message.attachments.size > 0 && this.vision_enabled) {
-      for (const [_, attachment] of message.attachments) {
+      for (const attachementArray of message.attachments) {
+        const attachment = attachementArray[1]
         if (attachment.contentType?.startsWith('image/'))
           content.push({
             type: 'image_url',

@@ -1,11 +1,9 @@
 import { Message } from 'discord.js'
-import type { ChatMessage } from '../types'
-
-import type { APTClient } from '../types'
 import { openai } from './open-ai'
 import { log } from 'kabum-ts-logger'
-import type { Persona } from '../../api/database/persona'
 import fetchApi from '../helpers/fetch-api'
+import type { APTClient } from '../types'
+import type { Persona } from '../../api/database/persona'
 
 export async function handlePrompt(client: APTClient, message: Message) {
   if (!message.content.startsWith(`<@${client.user?.id}>`)) return
