@@ -39,21 +39,28 @@ class OpenAi {
 
   createChatMessage(
     message: Message<boolean>,
-    role: 'user' | 'system' | 'assistant'
+    role: 'user' | 'system' | 'assistant',
+    authoredByPrompter: boolean = true
   ): ChatMessage {
     const content: ChatMessageContent[] = [
       {
         type: 'text',
-        text:
-          role === 'user'
-            ? message.content
-            : role === 'assistant'
-            ? message.content
-            : `<@${message.author.id}> a dit: ${message.content}`,
+        text: message.content,
       },
     ]
 
-    if (message.attachments.size > 0 && this.vision_enabled) {
+    if (role === 'user' && !authoredByPrompter) {
+      content.unshift({
+        type: 'text',
+        text: 'Le prochain prompt a été dit par <@${message.author.id}>',
+      })
+    }
+
+    if (
+      message.attachments.size > 0 &&
+      this.vision_enabled &&
+      role === 'user'
+    ) {
       for (const attachementArray of message.attachments) {
         const attachment = attachementArray[1]
         if (attachment.contentType?.startsWith('image/'))
@@ -97,6 +104,10 @@ class OpenAi {
             type: 'text',
             text: `Ton nom est SoilAPT. Les gens t'appellent aussi <@${client.user?.id}> mais tu n'utilise absolument jamais ce nom pour parler de toi.`,
           },
+          {
+            type: 'text',
+            text: `Quand quelqu'un cite quelqu'un d'autre et que tu dois en parler, ne répète jamais la partie du départ qui dit "Untel a dit:".`,
+          },
         ],
       },
     ]
@@ -107,13 +118,11 @@ class OpenAi {
           previousMessage.author.id === client.user?.id
         const isPromptUser = () => previousMessage.author.id === promptUser.id
 
-        const role = isAssistantPrompt()
-          ? 'assistant'
-          : isPromptUser()
-          ? 'user'
-          : 'system'
+        const role = isAssistantPrompt() ? 'assistant' : 'user'
 
-        systemMessages.push(this.createChatMessage(previousMessage, role))
+        systemMessages.push(
+          this.createChatMessage(previousMessage, role, isPromptUser())
+        )
       }
     }
 
@@ -127,11 +136,10 @@ class OpenAi {
   ) {
     const prompt = this.createChatMessage(message, 'user')
 
+    const context = await this.getContextFromDiscord(message, client, persona)
+
     return await this.openai.chat.completions.create({
-      messages: [
-        ...(await this.getContextFromDiscord(message, client, persona)),
-        prompt,
-      ],
+      messages: [...context, prompt],
       temperature: this.temperature,
       max_tokens: this.max_tokens,
       model: this.model,
