@@ -150,7 +150,7 @@ class OpenAi {
 if (Bun.env.OPENAI_API_KEY === undefined)
   throw `No OPENAI_API_KEY was found in the environment.`
 
-export const openai = new OpenAi(Bun.env.OPENAI_API_KEY, 'gpt-4o-mini', {
+export const openai = new OpenAi(Bun.env.OPENAI_API_KEY, 'gpt-4o', {
   temperature: 0.8,
   max_tokens: 300,
   vision_enabled:
